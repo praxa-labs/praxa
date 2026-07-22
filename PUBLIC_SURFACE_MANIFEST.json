@@ -8,7 +8,7 @@
     },
     {
       "path": ".github/workflows/release.yml",
-      "sha256": "553e4c4270ef72a6a991290f7221baee83ea9402a63fbca9c8b3344ce8959383"
+      "sha256": "1a086be6e4d7d05d46625c0267a5f9a6d99f1646dc478a7c2b7bb2c9fbe58284"
     },
     {
       "path": ".gitignore",
@@ -40,7 +40,7 @@
     },
     {
       "path": "docs/RELEASING.md",
-      "sha256": "7691b0366159a4a8952d35c72b4615937248910e06cce4ab05c1c6903c2b9b41"
+      "sha256": "7da0bb11d5ced8897e865310c81829a45c11a03c848a5e3722c51d59ed9107e4"
     },
     {
       "path": "docs/SECURITY.md",
@@ -172,7 +172,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "4d306bee78e78a2ba0cadad0dee29d6e0e888f29bc9b0966e57bd8e7a8e6b44b"
+      "sha256": "8b75387d0065b7fefdc31f30d8a498b7b064e1f2b052c3c81b72998a9739f714"
     },
     {
       "path": "scripts/check-packages.mjs",
@@ -212,7 +212,7 @@
     },
     {
       "path": "tests/public-api.test.mjs",
-      "sha256": "0e4281a2f42c58fdd15ea952fd3f62f69036b50a8cbaa9df79b3c04215347a1b"
+      "sha256": "5048d66fbdb59aa13f1a2f7e66790285baef41fd57e404fcb5124764c2fbf7db"
     },
     {
       "path": "tsconfig.json",

@@ -43,6 +43,24 @@ hosted Praxa Integration Gateway.
 - Independent provider-effect verification and auditable receipts in the
   private execution plane.
 
+## Research and preprint
+
+The preprint [*From Proposal to Proof: Praxa, an Evidence-Bound Harness for
+Governed AI Agent
+Utilization*](https://github.com/praxa-labs/praxa-benchmarks/tree/main/paper)
+documents the harness architecture, evidence model, validation results, and
+benchmark limitations. Download the reviewed artifacts as
+[PDF](https://github.com/praxa-labs/praxa-benchmarks/blob/main/output/pdf/praxa-harness-preprint.pdf)
+or
+[DOCX](https://github.com/praxa-labs/praxa-benchmarks/blob/main/output/doc/praxa-harness-preprint.docx).
+
+The reported harness checks are repository-local regression and conformance
+evidence. The Terminal-Bench study is a small, single-model pilot with equal
+aggregate accuracy between arms. Neither evidence lane is a production
+benchmark or supports a claim that Praxa is superior to another harness.
+Provider-backed production results remain unpublished pending controlled,
+independently reviewable runs.
+
 ## One-command agent setup
 
 Run this from an existing project:

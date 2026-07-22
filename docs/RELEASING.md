@@ -14,7 +14,8 @@ names instead of the canonical `@praxa/*` API.
 - Matching semantic versions in the root and all three package manifests.
 - An exact `@praxa/sdk` dependency in `@praxa/cli`.
 - npm ownership of the `@praxa` scope.
-- The GitHub `npm` environment and npm trusted publishing for every package.
+- The GitHub `npm` environment with an environment-scoped, granular
+  `NPM_TOKEN` that can publish all three packages.
 
 Configure npm trusted publishing separately for `@praxa/sdk`, `@praxa/cli`, and
 `@praxa/mcp-contracts` with these exact GitHub Actions values:
@@ -28,9 +29,18 @@ Configure npm trusted publishing separately for `@praxa/sdk`, `@praxa/cli`, and
 | Allowed action | `npm publish` |
 
 The workflow grants only `contents: write` and `id-token: write`, runs on a
-GitHub-hosted runner with Node.js 24, and installs npm 12 (newer than the npm
-11.5.1 trusted-publishing minimum). It intentionally provides no npm token;
-publication must authenticate through the workflow's OIDC identity.
+GitHub-hosted runner with Node.js 24, and installs npm 12. The environment
+secret is exposed as `NODE_AUTH_TOKEN` only to the publish step. Package
+manifests keep provenance enabled, so npm still records signed build
+provenance for token-authenticated GitHub Actions publication.
+
+The token is a bootstrap fallback, not the desired steady state. Configure npm
+trusted publishing separately for `@praxa/sdk`, `@praxa/cli`, and
+`@praxa/mcp-contracts` with the values above. After one successful
+OIDC-authenticated release, remove the `NODE_AUTH_TOKEN` mapping from
+`release.yml` and delete the `NPM_TOKEN` environment secret. Do both in the
+same maintenance window so the release workflow never has two undocumented
+authentication owners.
 
 ## Prepare and verify
 
