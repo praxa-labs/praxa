@@ -1,0 +1,382 @@
+openapi: 3.1.0
+info:
+  title: Praxa Integration Gateway
+  version: 8.1.0
+  description: >-
+    Scoped OAuth integration surface for Praxa. The public edge delegates every
+    governed operation to a private deterministic policy, broker, and verifier
+    plane. Models, SDKs, CLIs, and MCP tools grant no action authority. Aura names
+    are retained where they are stable wire-compatibility identifiers.
+x-aura-contract-version: aura-integration-gateway-v8.1
+x-aura-domain-action-registry:
+  source: src/lib/operator/domain-action-registry.v1.json
+  version: 1
+  directProviderCommitPaths: []
+servers:
+  - url: /
+    description: Canonical public edge; no Integration Gateway workers.dev route exists.
+security:
+  - oauthBearer: []
+paths:
+  /v8/missions:
+    post:
+      operationId: createMission
+      summary: Record an owner-bound durable governed intake mission
+      x-aura-required-scopes: [missions:write]
+      x-aura-idempotency: required
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CreateMissionRequest' }
+      responses:
+        '202':
+          description: Mission accepted for governed processing; not a provider outcome
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/MissionProjection' }
+        default: { $ref: '#/components/responses/Problem' }
+  /v8/missions/{runId}:
+    get:
+      operationId: getMission
+      x-aura-required-scopes: [missions:read]
+      x-aura-idempotency: safe-read
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+      responses:
+        '200':
+          description: Authoritative mission projection
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/MissionProjection' }
+        default: { $ref: '#/components/responses/Problem' }
+  /v8/missions/{runId}/events:
+    get:
+      operationId: streamMissionEvents
+      summary: Read a bounded resumable mission event stream
+      x-aura-required-scopes: [missions:read]
+      x-aura-idempotency: safe-read
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+        - $ref: '#/components/parameters/LastEventId'
+      responses:
+        '200':
+          description: SSE event batch; reconnect with Last-Event-ID
+          content:
+            text/event-stream:
+              schema: { type: string }
+        '409':
+          description: Cursor is outside the bounded durable replay window
+          content:
+            application/problem+json:
+              schema: { $ref: '#/components/schemas/Problem' }
+        default: { $ref: '#/components/responses/Problem' }
+  /v8/missions/{runId}/signals:
+    post:
+      operationId: signalMission
+      x-aura-required-scopes: [missions:write]
+      x-aura-idempotency: required
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/SignalMissionRequest' }
+      responses:
+        '200': { description: Signal durably recorded by the Control Plane }
+        default: { $ref: '#/components/responses/Problem' }
+  /v8/missions/{runId}/cancel:
+    post:
+      operationId: cancelMission
+      x-aura-required-scopes: [missions:write]
+      x-aura-idempotency: required
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CancelMissionRequest' }
+      responses:
+        '200': { description: Cancellation request propagated; external outcomes remain independently verified }
+        default: { $ref: '#/components/responses/Problem' }
+  /v8/capabilities/search:
+    post:
+      operationId: searchCapabilities
+      x-aura-required-scopes: [capabilities:read]
+      x-aura-idempotency: safe-read
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CapabilityRequirement' }
+      responses:
+        '200':
+          description: Policy-eligible manifests; semantic ranking grants no authority
+          content:
+            application/json:
+              schema:
+                type: array
+                maxItems: 256
+                items: { $ref: '#/components/schemas/CapabilityManifest' }
+        default: { $ref: '#/components/responses/Problem' }
+  /v8/memory/query:
+    post:
+      operationId: queryMemory
+      x-aura-required-scopes: [memory:read]
+      x-aura-idempotency: safe-read
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/MemoryQuery' }
+      responses:
+        '200': { description: Purpose-filtered, bounded context bundle }
+        default: { $ref: '#/components/responses/Problem' }
+  /v8/skills/{skillId}:
+    get:
+      operationId: getSkill
+      x-aura-required-scopes: [skills:read]
+      x-aura-idempotency: safe-read
+      parameters:
+        - $ref: '#/components/parameters/SkillId'
+      responses:
+        '200': { description: Versioned skill and evidence state; zero action authority }
+        default: { $ref: '#/components/responses/Problem' }
+  /v8/traces/{traceId}:
+    get:
+      operationId: getTrace
+      x-aura-required-scopes: [traces:read]
+      x-aura-idempotency: safe-read
+      parameters:
+        - $ref: '#/components/parameters/TraceId'
+      responses:
+        '200': { description: Redacted causal trace }
+        default: { $ref: '#/components/responses/Problem' }
+  /v8/context-twin/goals:
+    get:
+      operationId: listGoals
+      x-aura-required-scopes: [context:read]
+      x-aura-idempotency: safe-read
+      responses:
+        '200': { description: Purpose- and compartment-filtered goals }
+        default: { $ref: '#/components/responses/Problem' }
+  /v8/world-model/certificates:
+    get:
+      operationId: listWorldModelCertificates
+      x-aura-required-scopes: [world:read]
+      x-aura-idempotency: safe-read
+      responses:
+        '200': { description: Signed per-domain, head, and horizon capability certificates }
+        default: { $ref: '#/components/responses/Problem' }
+  /v8/coverage:
+    get:
+      operationId: getReferenceCoverage
+      x-aura-required-scopes: [coverage:read]
+      x-aura-idempotency: safe-read
+      responses:
+        '200': { description: Evidence-scored standalone reference coverage; not production readiness }
+        default: { $ref: '#/components/responses/Problem' }
+  /mcp:
+    post:
+      operationId: handleMcpPost
+      summary: MCP 2025-03-26 Streamable HTTP JSON-RPC endpoint
+      x-aura-required-scopes: [mcp:invoke]
+      x-aura-idempotency: none
+      parameters:
+        - $ref: '#/components/parameters/Origin'
+        - $ref: '#/components/parameters/McpAccept'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/JsonRpcMessage' }
+      responses:
+        '200':
+          description: JSON-RPC response. Tools are governed protocol translations only.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/JsonRpcMessage' }
+        '202': { description: Notification accepted with no response body }
+        default: { $ref: '#/components/responses/Problem' }
+    get:
+      operationId: handleMcpGet
+      summary: Optional MCP server-to-client stream is safely disabled
+      x-aura-required-scopes: [mcp:invoke]
+      x-aura-idempotency: none
+      parameters:
+        - $ref: '#/components/parameters/Origin'
+      responses:
+        '405':
+          description: This stateless server does not expose an unsolicited SSE stream
+          headers:
+            Allow: { schema: { const: POST } }
+        default: { $ref: '#/components/responses/Problem' }
+components:
+  securitySchemes:
+    oauthBearer:
+      type: http
+      scheme: bearer
+      bearerFormat: OAuth2 Access Token
+      description: >-
+        Short-lived Ed25519 delegated token introspected through the private OAuth
+        authority. Exact required scopes are declared per operation.
+  parameters:
+    RunId:
+      name: runId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+    SkillId:
+      name: skillId
+      in: path
+      required: true
+      schema: { type: string, minLength: 1, maxLength: 256, pattern: '^[A-Za-z0-9][A-Za-z0-9._:-]*$' }
+    TraceId:
+      name: traceId
+      in: path
+      required: true
+      schema: { type: string, minLength: 1, maxLength: 256, pattern: '^[A-Za-z0-9][A-Za-z0-9._:-]*$' }
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      schema: { type: string, minLength: 16, maxLength: 128, pattern: '^[A-Za-z0-9][A-Za-z0-9._:-]*$' }
+    LastEventId:
+      name: Last-Event-ID
+      in: header
+      required: false
+      schema: { type: string, minLength: 1, maxLength: 256, pattern: '^[!-~]+$' }
+    Origin:
+      name: Origin
+      in: header
+      required: true
+      schema: { type: string, format: uri, maxLength: 2048 }
+    McpAccept:
+      name: Accept
+      in: header
+      required: true
+      schema:
+        type: string
+        description: Must advertise both application/json and text/event-stream.
+  responses:
+    Problem:
+      description: RFC 9457 problem details; credentials and forbidden sensitive fields are redacted
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
+  schemas:
+    Problem:
+      type: object
+      additionalProperties: false
+      required: [type, title, status, detail, code, requestId]
+      properties:
+        type: { type: string, format: uri-reference }
+        title: { type: string, minLength: 1 }
+        status: { type: integer, minimum: 400, maximum: 599 }
+        detail: { type: string, minLength: 1 }
+        code: { type: string, minLength: 1 }
+        requestId: { type: string, format: uuid }
+    CreateMissionRequest:
+      type: object
+      additionalProperties: false
+      required: [goalSpec, resourceBudget]
+      properties:
+        goalSpec: { type: object }
+        resourceBudget: { $ref: '#/components/schemas/ResourceBudget' }
+    ResourceBudget:
+      type: object
+      additionalProperties: false
+      required: [maximumSteps, maximumToolCalls, maximumElapsedMs, maximumParallelism]
+      properties:
+        maximumSteps: { type: integer, minimum: 1 }
+        maximumToolCalls: { type: integer, minimum: 0 }
+        maximumElapsedMs: { type: integer, minimum: 1 }
+        maximumParallelism: { type: integer, minimum: 1, maximum: 64 }
+    MissionProjection:
+      type: object
+      additionalProperties: false
+      required: [runId, status, sequence, steps]
+      properties:
+        runId: { type: string, format: uuid }
+        status: { enum: [running, waiting, succeeded, failed, cancelled] }
+        sequence: { type: integer, minimum: 1 }
+        steps:
+          type: array
+          maxItems: 4096
+          items:
+            type: object
+            additionalProperties: false
+            required: [stepId, status]
+            properties:
+              stepId: { type: string }
+              status: { type: string }
+    SignalMissionRequest:
+      type: object
+      additionalProperties: false
+      required: [signal, payload]
+      properties:
+        signal: { type: string, minLength: 1, maxLength: 256 }
+        payload: {}
+    CancelMissionRequest:
+      type: object
+      additionalProperties: false
+      required: [reason]
+      properties:
+        reason: { type: string, minLength: 1, maxLength: 500 }
+    CapabilityRequirement:
+      type: object
+      additionalProperties: false
+      required: [actionFamily, purpose, targetType]
+      description: principalId is injected from the OAuth delegation and is forbidden from callers.
+      properties:
+        actionFamily: { type: string, minLength: 1, maxLength: 128 }
+        purpose: { type: string, minLength: 1, maxLength: 256 }
+        targetType: { type: string, minLength: 1, maxLength: 128 }
+    CapabilityManifest:
+      type: object
+      required: [capabilityId, kind, version, contractHash, healthState]
+      properties:
+        capabilityId: { type: string }
+        kind: { enum: [api, mcp, a2a_agent, browser, device, skill, human] }
+        version: { type: string }
+        contractHash: { type: string, pattern: '^[a-f0-9]{64}$' }
+        healthState: { enum: [healthy, degraded, unavailable, quarantined] }
+    MemoryQuery:
+      type: object
+      additionalProperties: false
+      required: [compartment, purpose, classes, queryText]
+      description: principalId is injected from the OAuth delegation and is forbidden from callers.
+      properties:
+        compartment: { type: string, minLength: 1, maxLength: 128 }
+        purpose: { type: string, minLength: 1, maxLength: 256 }
+        queryText: { type: string, minLength: 1, maxLength: 32768 }
+        queryEmbedding:
+          type: array
+          minItems: 1
+          maxItems: 4096
+          items: { type: number }
+        limit: { type: integer, minimum: 1, maximum: 50, default: 10 }
+        maxContextBytes: { type: integer, minimum: 64, maximum: 1048576 }
+        maxContextTokens: { type: integer, minimum: 16, maximum: 262144 }
+        classes:
+          type: array
+          minItems: 1
+          maxItems: 64
+          uniqueItems: true
+          items: { type: string, minLength: 1, maxLength: 128 }
+    JsonRpcMessage:
+      type: object
+      required: [jsonrpc]
+      properties:
+        jsonrpc: { const: '2.0' }
+        id: { oneOf: [{ type: string }, { type: number }, { type: 'null' }] }
+        method: { type: string }
+        params: {}
+        result: {}
+        error: { type: object }

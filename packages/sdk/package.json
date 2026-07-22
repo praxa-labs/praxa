@@ -1,0 +1,41 @@
+{
+  "name": "@praxa/sdk",
+  "version": "0.1.0",
+  "description": "Credential-free TypeScript client for the Praxa Integration Gateway.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/praxa-labs/praxa#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/praxa-labs/praxa.git",
+    "directory": "packages/sdk"
+  },
+  "bugs": {
+    "url": "https://github.com/praxa-labs/praxa/issues"
+  },
+  "keywords": ["praxa", "agent", "sdk", "oauth", "typescript"],
+  "sideEffects": false,
+  "files": ["dist", "README.md", "LICENSE", "NOTICE"],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./contracts": {
+      "types": "./dist/generated-contracts.d.ts",
+      "import": "./dist/generated-contracts.js"
+    }
+  },
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prepack": "npm run build"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

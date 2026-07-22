@@ -1,0 +1,42 @@
+{
+  "name": "@praxa/cli",
+  "version": "0.1.0",
+  "description": "Credential-free command line client for the Praxa Integration Gateway.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/praxa-labs/praxa#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/praxa-labs/praxa.git",
+    "directory": "packages/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/praxa-labs/praxa/issues"
+  },
+  "keywords": ["praxa", "agent", "cli", "oauth"],
+  "files": ["bin", "dist", "README.md", "LICENSE", "NOTICE"],
+  "bin": {
+    "praxa": "./bin/praxa.mjs",
+    "aura": "./bin/aura.mjs"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/arguments.d.ts",
+      "import": "./dist/arguments.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prepack": "npm run build"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "dependencies": {
+    "@praxa/sdk": "0.1.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

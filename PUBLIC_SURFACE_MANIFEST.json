@@ -1,0 +1,178 @@
+{
+  "schemaVersion": "praxa-public-surface-v1",
+  "source": "praxa-harness-reviewed-allowlist",
+  "files": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "1da959b6d757ead978e5c98b56bce56cb87f313627e9bbb02d6d74f84d4db997"
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "eb7ceaed6aa8bf7723f1fba6929b7a5a587601ed469ea1b135e60cf884b91b7e"
+    },
+    {
+      "path": "CODE_OF_CONDUCT.md",
+      "sha256": "1e9a69476b803b82272893e7bab5b5558130b2940d183976e9d6c610c3d027d1"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "sha256": "308525771f2f41e483a0c5ba0a1e97e89923c7f5728192b2a6146c1b1809ca79"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "sha256": "f099bd514c268a641473fc8ce0f2ad38207419b8277fb97a9d0020466ec1ee8e"
+    },
+    {
+      "path": "docs/AUTHENTICATION.md",
+      "sha256": "c9d9337d0a9f27e796a0e2e9f6183993deeec6f4267c4dd0b0c49a9496053d93"
+    },
+    {
+      "path": "docs/RELEASING.md",
+      "sha256": "4b88783fafa00dbeefe297fbf939f24af60037cc36e7b3289765eb07c5b727a2"
+    },
+    {
+      "path": "docs/SECURITY.md",
+      "sha256": "3e08728719a008139ddbf1833380349b2543a79c1e8b69733627d09b31749c38"
+    },
+    {
+      "path": "examples/mission.json",
+      "sha256": "6f48d6a7b8048b1efac4a2f29eef5582bbf96e8292442aaa245ca4af756e26bb"
+    },
+    {
+      "path": "examples/typescript/mission.ts",
+      "sha256": "9a7ebc42ff12f60468058a894a48b5675192d6841bf277880f72d6e03c517ef3"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "4402fec3a0c040eb2e3b8c81009868ad5cdccdb4f007b8a3a2a5c6c8eb0d2d0f"
+    },
+    {
+      "path": "NOTICE",
+      "sha256": "efb5539cd50be74608773fc5e05ace7927c90feb2f11d004cbd47b11a0f8b07d"
+    },
+    {
+      "path": "openapi/praxa-api.yaml",
+      "sha256": "7afed65f7a8de5a07d974f729675419e4d99c93d1ada26353bd7844efd43a98e"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "d6679e39ad3c517f30fd373fd20b77f2736b4c0e1b6bfcd883f31e6710a1f289"
+    },
+    {
+      "path": "package.json",
+      "sha256": "a7279fb80c76d8e425b25e7f722253ac2b601a241d540805d5bd268df0ea97a6"
+    },
+    {
+      "path": "packages/cli/bin/aura.mjs",
+      "sha256": "e64fc0240258478c0a6c603c76c9f266a07fcba8e688d5c92f61449bd05c9a3b"
+    },
+    {
+      "path": "packages/cli/bin/praxa.mjs",
+      "sha256": "f38eca8eb85810345daa0c541fa29b824e8c2a9ed4f0a75bdb58ebe88825eee3"
+    },
+    {
+      "path": "packages/cli/LICENSE",
+      "sha256": "4402fec3a0c040eb2e3b8c81009868ad5cdccdb4f007b8a3a2a5c6c8eb0d2d0f"
+    },
+    {
+      "path": "packages/cli/NOTICE",
+      "sha256": "efb5539cd50be74608773fc5e05ace7927c90feb2f11d004cbd47b11a0f8b07d"
+    },
+    {
+      "path": "packages/cli/package.json",
+      "sha256": "722bd55440acaa7c0286e6b9fe03b8e2f3c50e3af466b7a07d563044f99ee609"
+    },
+    {
+      "path": "packages/cli/README.md",
+      "sha256": "185d8a094b27f0587d6ca0f8d2fcfec506b6529e8b46b34e491405034ef2c137"
+    },
+    {
+      "path": "packages/cli/src/arguments.ts",
+      "sha256": "235e11afcbb585d3a69505fa935cca268f4290e4721d5ac7a7d8cfb9ed28f386"
+    },
+    {
+      "path": "packages/cli/tsconfig.json",
+      "sha256": "79cb5eceae3039ff4940de76616f32be9363c2eef4e2a2507e976a8f6b4bc230"
+    },
+    {
+      "path": "packages/mcp-contracts/LICENSE",
+      "sha256": "4402fec3a0c040eb2e3b8c81009868ad5cdccdb4f007b8a3a2a5c6c8eb0d2d0f"
+    },
+    {
+      "path": "packages/mcp-contracts/NOTICE",
+      "sha256": "efb5539cd50be74608773fc5e05ace7927c90feb2f11d004cbd47b11a0f8b07d"
+    },
+    {
+      "path": "packages/mcp-contracts/package.json",
+      "sha256": "b4a5d53812d638b3553bc552fd369270a93f24f2b7de5ab1c682f4cf1df1ec90"
+    },
+    {
+      "path": "packages/mcp-contracts/README.md",
+      "sha256": "6339dd566ba65ed1eeac7f451d2018d795f73783be9585784183d83090224532"
+    },
+    {
+      "path": "packages/mcp-contracts/src/index.ts",
+      "sha256": "bee3f151c86f29f0871c006d126f611ff71fedb1f4eaab0d295d8a77d955f2b3"
+    },
+    {
+      "path": "packages/mcp-contracts/tsconfig.json",
+      "sha256": "fdb0d748cdff9e85bf08d1144277f7e16de963e62343dfb2f9c7d5ebf46f1578"
+    },
+    {
+      "path": "packages/sdk/LICENSE",
+      "sha256": "4402fec3a0c040eb2e3b8c81009868ad5cdccdb4f007b8a3a2a5c6c8eb0d2d0f"
+    },
+    {
+      "path": "packages/sdk/NOTICE",
+      "sha256": "efb5539cd50be74608773fc5e05ace7927c90feb2f11d004cbd47b11a0f8b07d"
+    },
+    {
+      "path": "packages/sdk/package.json",
+      "sha256": "364b569afa8739ce7618930b2cdd9e5872c7546a387bce8259314a87258dd9bb"
+    },
+    {
+      "path": "packages/sdk/README.md",
+      "sha256": "d77c1f675933219afed155b79c6268a8977242acd0e95a718a2a9e857cf254e9"
+    },
+    {
+      "path": "packages/sdk/src/client.ts",
+      "sha256": "c050738e0f5c0b59990a958d66a73d583b72eb9250b95d8342503906fd4b7ac5"
+    },
+    {
+      "path": "packages/sdk/src/generated-contracts.ts",
+      "sha256": "407da3fbad3a67223c56c29033c9f79038d09f759e391177a9bd026f69b2fd4c"
+    },
+    {
+      "path": "packages/sdk/src/index.ts",
+      "sha256": "3b03d53e6a6f67ca6cdb3d001c9aca6aae4f8b7ec3678c24500c6b61bdb01b19"
+    },
+    {
+      "path": "packages/sdk/tsconfig.json",
+      "sha256": "fdb0d748cdff9e85bf08d1144277f7e16de963e62343dfb2f9c7d5ebf46f1578"
+    },
+    {
+      "path": "README.md",
+      "sha256": "8df69ef3af43b9877cd9253bee1c53f89b582cb665c4d309a98239364c664e28"
+    },
+    {
+      "path": "scripts/check-packages.mjs",
+      "sha256": "26084a887e3769b346b1214ea193b58a1ecbc6e72f132162663c103cf027ebbc"
+    },
+    {
+      "path": "scripts/check-public-boundary.mjs",
+      "sha256": "a02120d54fa4f7c9d6639f877991c124c4934cab8f211f276b37feb8c7b0cd95"
+    },
+    {
+      "path": "SECURITY.md",
+      "sha256": "3dac977c4d732adf6273a08b628ce439ae9671b7d89baf844f6926f5a38621c7"
+    },
+    {
+      "path": "tests/public-api.test.mjs",
+      "sha256": "fac07f3be9d0ecebe300158ce35222b1953a5e021a89366a04899586a9c6e247"
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "edb0002dcd4c205037a2721135d351539afb648f30fec581dc181d4b0906850d"
+    }
+  ]
+}
