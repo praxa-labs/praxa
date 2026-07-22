@@ -175,12 +175,16 @@
       "sha256": "c53606acf2df1e32e497887eff9fc71182108bc212d073be805d9c01c30f5c02"
     },
     {
+      "path": "scripts/npm-registry-json.mjs",
+      "sha256": "f2dc795c75ae3518efb569d8f7f352fe39309cc3e702e1641664aac96ea95a8d"
+    },
+    {
       "path": "scripts/pack-release.mjs",
       "sha256": "3aee91f17041118182a9854c3b14d02d3095d0ad00a3d5bb3f22a72296df3315"
     },
     {
       "path": "scripts/publish-packages.mjs",
-      "sha256": "a0fbf184150a2f65ac0d7a3cbd9b1f16367aaa99b4207446c43e2b82506fbfd6"
+      "sha256": "2a0a7cbfa6834bb8f097c50b2ac22c41391b8b39aaa97fdf8048ae0ee446d503"
     },
     {
       "path": "SECURITY.md",
@@ -189,6 +193,10 @@
     {
       "path": "tests/npm-pack-json.test.mjs",
       "sha256": "6d7f6b5af0d35ed3b2d0293ca5781aecbed22df92e461a6ea8950c865cffb7f1"
+    },
+    {
+      "path": "tests/npm-registry-json.test.mjs",
+      "sha256": "83b1e5586866fa57ae6619072de65841e10d67d9decf8e4a91c2959cc5afbd96"
     },
     {
       "path": "tests/public-api.test.mjs",

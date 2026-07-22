@@ -4,6 +4,8 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { parseNpmViewVersion } from "./npm-registry-json.mjs";
+
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const registry = "https://registry.npmjs.org/";
 const packages = ["sdk", "mcp-contracts", "cli"];
@@ -23,7 +25,7 @@ for (const directory of packages) {
     { cwd: root, encoding: "utf8" },
   );
   if (lookup.status === 0) {
-    assert.equal(JSON.parse(lookup.stdout), manifest.version, `${specifier} registry version mismatch`);
+    parseNpmViewVersion(lookup.stdout, manifest.version);
     console.log(`Already published: ${specifier}`);
     continue;
   }
