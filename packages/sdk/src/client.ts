@@ -2,6 +2,7 @@ import type {
   AuraProblem,
   AuraSseEvent,
   CreateMissionRequest,
+  IntentSubmission,
   JsonObject,
   JsonValue,
   MemoryQuery,
@@ -52,8 +53,15 @@ function assertAccessToken(token: string): string {
 
 function assertBaseUrl(value: string): URL {
   const url = new URL(value);
-  if (url.protocol !== "https:" || url.username !== "" || url.password !== "") {
-    throw new Error("Aura baseUrl must be an HTTPS origin without credentials");
+  if (
+    url.protocol !== "https:"
+    || url.username !== ""
+    || url.password !== ""
+    || url.pathname !== "/"
+    || url.search !== ""
+    || url.hash !== ""
+  ) {
+    throw new Error("Aura baseUrl must be an exact HTTPS origin without credentials");
   }
   return url;
 }
@@ -93,6 +101,16 @@ export class AuraClient {
     this.#fetch = options.fetch ?? fetch;
     this.#maximumAttempts = Math.max(1, Math.min(options.maximumAttempts ?? 3, 4));
     this.#retryBaseDelayMs = Math.max(0, Math.min(options.retryBaseDelayMs ?? 100, 30_000));
+  }
+
+  submitIntent(intent: string, idempotencyKey: string, signal?: AbortSignal) {
+    return this.#request<IntentSubmission>({
+      method: "POST",
+      path: "/v8/intents",
+      body: { intent },
+      idempotencyKey,
+      signal,
+    });
   }
 
   async #request<T>(options: RequestOptions): Promise<T> {

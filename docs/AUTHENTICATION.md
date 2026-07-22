@@ -22,7 +22,7 @@ reviewed first-party session flow and keep them out of durable client storage.
 ## CLI
 
 ```sh
-export PRAXA_BASE_URL="https://your-praxa-gateway.example"
+npx @praxa/cli@0.2.0 init --base-url https://your-praxa-gateway.example
 export PRAXA_ACCESS_TOKEN="<short-lived delegated token>"
 praxa doctor
 ```
@@ -38,4 +38,6 @@ the scopes your integration needs. A scope lets a request reach server-side
 policy; it does not itself authorize a provider effect.
 
 OAuth discovery, client registration, and production token issuance are hosted
-deployment concerns and are not implemented in this repository.
+deployment concerns. A configured Integration Gateway publishes RFC 9728
+protected-resource metadata at `/.well-known/oauth-protected-resource`; it does
+not mint tokens or replace the authorization server.

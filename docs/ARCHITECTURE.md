@@ -26,7 +26,9 @@ outcome is not silently reported as success.
 ## Public contracts
 
 - OpenAPI operations under `/v8/*`
-- MCP 2025-03-26 Streamable HTTP endpoint at `/mcp`
+- MCP 2025-11-25 Streamable HTTP endpoint at `/mcp`, with negotiated
+  2025-03-26 compatibility
+- RFC 9728 protected-resource metadata for MCP OAuth discovery
 - Delegated bearer token and exact operation scopes
 - `Idempotency-Key` on mutations
 - `Last-Event-ID` for bounded mission-event resume

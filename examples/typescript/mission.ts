@@ -12,21 +12,13 @@ const praxa = new PraxaClient({
   accessToken: () => accessToken,
 });
 
-const mission = await praxa.createMission(
-  {
-    goalSpec: { task: "Prepare the weekly review" },
-    resourceBudget: {
-      maximumSteps: 12,
-      maximumToolCalls: 8,
-      maximumElapsedMs: 120_000,
-      maximumParallelism: 2,
-    },
-  },
+const submission = await praxa.submitIntent(
+  "Prepare the weekly review",
   crypto.randomUUID(),
 );
 
-console.log({ runId: mission.runId, status: mission.status });
-
-for await (const event of praxa.missionEvents(mission.runId)) {
-  console.log(event.id, event.event, event.data);
-}
+console.log({
+  submissionId: submission.submissionId,
+  disposition: submission.disposition,
+  message: submission.message,
+});

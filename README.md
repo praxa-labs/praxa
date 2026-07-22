@@ -21,9 +21,9 @@ hosted Praxa Integration Gateway.
 
 | Package | Install | Capability |
 | --- | --- | --- |
-| [`@praxa/sdk`](https://www.npmjs.com/package/@praxa/sdk) | `npm install @praxa/sdk` | Typed HTTP and SSE client for missions, memory, capabilities, skills, traces, and world-model certificates |
-| [`@praxa/cli`](https://www.npmjs.com/package/@praxa/cli) | `npm install --global @praxa/cli` | Command-line interface for gateway diagnostics and durable mission operations |
-| [`@praxa/mcp-contracts`](https://www.npmjs.com/package/@praxa/mcp-contracts) | `npm install @praxa/mcp-contracts` | MCP 2025-03-26 tool metadata, OAuth scopes, JSON-RPC types, and governed route mappings |
+| [`@praxa/sdk`](https://www.npmjs.com/package/@praxa/sdk) | `npm install @praxa/sdk` | Typed HTTP/SSE client plus framework-neutral governed agent tools |
+| [`@praxa/cli`](https://www.npmjs.com/package/@praxa/cli) | `npx @praxa/cli init` | One-command setup for agent clients plus gateway and mission operations |
+| [`@praxa/mcp-contracts`](https://www.npmjs.com/package/@praxa/mcp-contracts) | `npm install @praxa/mcp-contracts` | MCP 2025-11-25 tool metadata, OAuth scopes, JSON-RPC types, and governed route mappings |
 
 ## Agentic harness capabilities
 
@@ -43,7 +43,24 @@ hosted Praxa Integration Gateway.
 - Independent provider-effect verification and auditable receipts in the
   private execution plane.
 
-## Quick start
+## One-command agent setup
+
+Run this from an existing project:
+
+```sh
+npx @praxa/cli@0.2.0 init
+```
+
+It safely merges project-scoped Praxa MCP configuration for Codex, Claude
+Code, Cursor, and VS Code; creates an environment template; and writes
+`.praxa/SETUP.md` for the operator and agent. No access token or provider key is
+written. Preview every change with `--dry-run`, select clients with repeated
+`--target`, or point to a self-hosted gateway with `--base-url`.
+
+See [Agent setup](docs/AGENT_SETUP.md) for authentication and client-specific
+behavior.
+
+## SDK quick start
 
 Requirements:
 
@@ -57,7 +74,7 @@ Install the SDK:
 npm install @praxa/sdk
 ```
 
-Create and observe a governed agent mission:
+Submit an intent for governed compilation:
 
 ```ts
 import { PraxaClient } from "@praxa/sdk";
@@ -67,27 +84,17 @@ const praxa = new PraxaClient({
   accessToken: async () => process.env.PRAXA_ACCESS_TOKEN!,
 });
 
-const mission = await praxa.createMission(
-  {
-    goalSpec: { task: "Prepare the weekly review" },
-    resourceBudget: {
-      maximumSteps: 12,
-      maximumToolCalls: 8,
-      maximumElapsedMs: 120_000,
-      maximumParallelism: 2,
-    },
-  },
+const submission = await praxa.submitIntent(
+  "Prepare the weekly review",
   crypto.randomUUID(),
 );
-
-for await (const event of praxa.missionEvents(mission.runId)) {
-  console.log(event.id, event.event, event.data);
-}
+console.log(submission.submissionId, submission.disposition);
 ```
 
-Every mutation uses a caller-supplied idempotency key. Accepted work is not
-presented as a verified external effect; applications can retain uncertainty
-until the server exposes independent verification evidence.
+Every mutation uses a caller-supplied idempotency key. An intent submission is
+only `pending_compilation`: it creates no action authority and is not presented
+as a verified external effect. Advanced clients may submit an already
+canonicalized GoalSpec with `createMission`.
 
 See the [TypeScript example](examples/typescript/mission.ts), [authentication
 guide](docs/AUTHENTICATION.md), [architecture guide](docs/ARCHITECTURE.md), and
@@ -99,10 +106,12 @@ guide](docs/AUTHENTICATION.md), [architecture guide](docs/ARCHITECTURE.md), and
 npm install --global @praxa/cli
 praxa version
 
-export PRAXA_BASE_URL="https://api.example.com"
+praxa init --dry-run
+praxa init
+
 export PRAXA_ACCESS_TOKEN="<short-lived delegated OAuth token>"
 praxa doctor
-praxa mission create --input mission.json --idempotency-key "$(uuidgen)"
+praxa mission submit --intent "Prepare the weekly review" --idempotency-key "$(uuidgen)"
 ```
 
 `praxa version` is a no-network installation check. `praxa doctor` performs an
@@ -126,9 +135,20 @@ console.log(PRAXA_MCP_TOOLS.map((tool) => tool.name));
 console.log(praxaMcpTool("aura_create_mission")?.requiredScope);
 ```
 
-Connect a compatible MCP 2025-03-26 Streamable HTTP client to the hosted
-`/mcp` endpoint. Tool descriptions contribute no authority; the gateway still
-checks delegated OAuth scope and deterministic policy for every request.
+Connect a compatible MCP Streamable HTTP client to `/mcp`. Current clients use
+MCP 2025-11-25 and the gateway negotiates 2025-03-26 compatibility. Tool
+descriptions contribute no authority; the gateway still checks delegated OAuth
+scope and deterministic policy for every request.
+
+## Existing AI pipelines
+
+`createPraxaAgentTools(client)` provides framework-neutral JSON Schema tools
+with bound execution. `PRAXA_OPENAI_FUNCTION_TOOLS` provides function
+declarations. Direct remote MCP is the smallest integration for clients and
+hosted agent runtimes that support it.
+
+Copy-paste adapters for Vercel AI SDK, OpenAI Responses/Agents, and LangChain
+are in [Framework integrations](examples/integrations/frameworks.md).
 
 ## Architecture and security boundary
 

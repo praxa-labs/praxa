@@ -1,6 +1,6 @@
 {
   "name": "@praxa/sdk",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "TypeScript SDK for governed AI agents, durable missions, agent memory, capabilities, SSE events, and the Praxa agentic harness.",
   "type": "module",
   "license": "Apache-2.0",
@@ -39,6 +39,10 @@
     "./contracts": {
       "types": "./dist/generated-contracts.d.ts",
       "import": "./dist/generated-contracts.js"
+    },
+    "./tools": {
+      "types": "./dist/tools.d.ts",
+      "import": "./dist/tools.js"
     }
   },
   "types": "./dist/index.d.ts",

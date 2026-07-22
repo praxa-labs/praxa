@@ -38,8 +38,6 @@ jobs:
       - name: Publish packages to npm
         if: github.event_name == 'release' || inputs.publish
         run: npm run release:publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - uses: actions/upload-artifact@v6
         with:
           name: npm-packages-${{ github.sha }}

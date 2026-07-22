@@ -6,7 +6,7 @@
 
 export const AURA_OPENAPI_VERSION = "8.1.0" as const;
 export const AURA_CONTRACT_VERSION = "aura-integration-gateway-v8.1" as const;
-export const AURA_CONTRACT_FINGERPRINT = "7afed65f7a8de5a07d974f729675419e4d99c93d1ada26353bd7844efd43a98e" as const;
+export const AURA_CONTRACT_FINGERPRINT = "a9835faa4654246f83c452ae968a569c85be28f93017882e710ca35c10dbbecc" as const;
 export const AURA_OPENAPI_SOURCE_DIGEST: string = AURA_CONTRACT_FINGERPRINT;
 export const AURA_OPENAPI_SHA256: string = AURA_CONTRACT_FINGERPRINT;
 
@@ -24,6 +24,7 @@ export type AuraRouteContract = Readonly<{
 }>;
 
 export const AURA_ROUTE_CONTRACTS = [
+  { operationId: "submitIntent", method: "POST", path: "/v8/intents", scope: "missions:write", idempotency: "required", response: "json" },
   { operationId: "createMission", method: "POST", path: "/v8/missions", scope: "missions:write", idempotency: "required", response: "json" },
   { operationId: "getMission", method: "GET", path: "/v8/missions/{runId}", scope: "missions:read", idempotency: "safe-read", response: "json" },
   { operationId: "streamMissionEvents", method: "GET", path: "/v8/missions/{runId}/events", scope: "missions:read", idempotency: "safe-read", response: "sse" },
@@ -41,6 +42,13 @@ export const AURA_ROUTE_CONTRACTS = [
 ] as const satisfies readonly AuraRouteContract[];
 
 export type AuraOperationMap = Readonly<{
+  readonly submitIntent: Readonly<{
+    method: "POST";
+    path: "/v8/intents";
+    scope: "missions:write";
+    requestBody: SubmitIntentRequest;
+    responseBody: IntentSubmission;
+  }>;
   readonly createMission: Readonly<{
     method: "POST";
     path: "/v8/missions";
@@ -168,6 +176,13 @@ export type CreateMissionRequest = Readonly<{
   readonly resourceBudget: ResourceBudget;
 }>;
 
+export type IntentSubmission = Readonly<{
+  readonly disposition: "pending_compilation";
+  readonly message: string;
+  readonly requestId: string;
+  readonly submissionId: string;
+}>;
+
 export type JsonRpcMessage = Readonly<{
   readonly error?: JsonObject;
   readonly id?: string | number | null;
@@ -217,6 +232,10 @@ export type ResourceBudget = Readonly<{
 export type SignalMissionRequest = Readonly<{
   readonly payload: JsonValue;
   readonly signal: string;
+}>;
+
+export type SubmitIntentRequest = Readonly<{
+  readonly intent: string;
 }>;
 
 export type AuraProblem = Problem;

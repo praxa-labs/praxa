@@ -1,6 +1,6 @@
 {
   "name": "@praxa/mcp-contracts",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "MCP contracts for governed AI agent tools, OAuth scopes, and the Praxa agentic harness.",
   "type": "module",
   "license": "Apache-2.0",

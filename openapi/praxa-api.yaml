@@ -18,6 +18,26 @@ servers:
 security:
   - oauthBearer: []
 paths:
+  /v8/intents:
+    post:
+      operationId: submitIntent
+      summary: Record a natural-language intent for deterministic GoalSpec and PlanIR compilation
+      x-aura-required-scopes: [missions:write]
+      x-aura-idempotency: required
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/SubmitIntentRequest' }
+      responses:
+        '202':
+          description: Intent durably recorded for compilation; no action or provider outcome is implied
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/IntentSubmission' }
+        default: { $ref: '#/components/responses/Problem' }
   /v8/missions:
     post:
       operationId: createMission
@@ -185,7 +205,7 @@ paths:
   /mcp:
     post:
       operationId: handleMcpPost
-      summary: MCP 2025-03-26 Streamable HTTP JSON-RPC endpoint
+      summary: MCP 2025-11-25 Streamable HTTP JSON-RPC endpoint with 2025-03-26 compatibility
       x-aura-required-scopes: [mcp:invoke]
       x-aura-idempotency: none
       parameters:
@@ -255,7 +275,8 @@ components:
     Origin:
       name: Origin
       in: header
-      required: true
+      required: false
+      description: Validated against the gateway allowlist when present; native clients may omit it.
       schema: { type: string, format: uri, maxLength: 2048 }
     McpAccept:
       name: Accept
@@ -271,6 +292,21 @@ components:
         application/problem+json:
           schema: { $ref: '#/components/schemas/Problem' }
   schemas:
+    SubmitIntentRequest:
+      type: object
+      additionalProperties: false
+      required: [intent]
+      properties:
+        intent: { type: string, minLength: 1, maxLength: 4000 }
+    IntentSubmission:
+      type: object
+      additionalProperties: false
+      required: [requestId, submissionId, disposition, message]
+      properties:
+        requestId: { type: string, format: uuid }
+        submissionId: { type: string, format: uuid }
+        disposition: { enum: [pending_compilation] }
+        message: { type: string, minLength: 1, maxLength: 1000 }
     Problem:
       type: object
       additionalProperties: false
@@ -294,9 +330,9 @@ components:
       additionalProperties: false
       required: [maximumSteps, maximumToolCalls, maximumElapsedMs, maximumParallelism]
       properties:
-        maximumSteps: { type: integer, minimum: 1 }
-        maximumToolCalls: { type: integer, minimum: 0 }
-        maximumElapsedMs: { type: integer, minimum: 1 }
+        maximumSteps: { type: integer, minimum: 1, maximum: 128 }
+        maximumToolCalls: { type: integer, minimum: 0, maximum: 4096 }
+        maximumElapsedMs: { type: integer, minimum: 1000, maximum: 86400000 }
         maximumParallelism: { type: integer, minimum: 1, maximum: 64 }
     MissionProjection:
       type: object
