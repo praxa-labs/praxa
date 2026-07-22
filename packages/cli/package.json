@@ -1,6 +1,6 @@
 {
   "name": "@praxa/cli",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "CLI for governed AI agent missions, gateway diagnostics, and the Praxa agentic harness.",
   "type": "module",
   "license": "Apache-2.0",
@@ -35,6 +35,10 @@
     ".": {
       "types": "./dist/arguments.d.ts",
       "import": "./dist/arguments.js"
+    },
+    "./init": {
+      "types": "./dist/init.d.ts",
+      "import": "./dist/init.js"
     }
   },
   "scripts": {
@@ -47,7 +51,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "@praxa/sdk": "0.1.0"
+    "@praxa/sdk": "0.2.0"
   },
   "engines": {
     "node": ">=20"

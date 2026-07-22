@@ -1,7 +1,7 @@
 # `@praxa/mcp-contracts`
 
-Protocol-only Model Context Protocol (MCP) 2025-03-26 contracts for the Praxa
-agentic harness. Use the package to discover governed tools, required OAuth
+Protocol-only Model Context Protocol (MCP) 2025-11-25 contracts for the Praxa
+agentic harness, with negotiated 2025-03-26 compatibility. Use the package to discover governed tools, required OAuth
 scopes, idempotency rules, JSON-RPC types, and versioned Integration Gateway
 routes from TypeScript.
 
@@ -36,8 +36,9 @@ The `aura_*` tool names are stable wire identifiers retained for compatibility.
 The public package name and TypeScript aliases use the Praxa brand.
 
 The package does not implement an MCP server, OAuth authority, provider
-adapter, or action executor. Connect an MCP 2025-03-26 Streamable HTTP client to
-the hosted `/mcp` endpoint and use a delegated Praxa OAuth token with the exact
-scope required by each tool.
+adapter, or action executor. Connect an MCP Streamable HTTP client to `/mcp`
+and use a delegated Praxa OAuth token with the exact scope required by each
+tool. Current clients negotiate 2025-11-25; legacy 2025-03-26 clients remain
+supported.
 
 Repository: [praxa-labs/praxa](https://github.com/praxa-labs/praxa)

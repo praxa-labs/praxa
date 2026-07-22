@@ -14,8 +14,7 @@ names instead of the canonical `@praxa/*` API.
 - Matching semantic versions in the root and all three package manifests.
 - An exact `@praxa/sdk` dependency in `@praxa/cli`.
 - npm ownership of the `@praxa` scope.
-- The GitHub `npm` environment and npm trusted publishing, or a scoped
-  automation token stored only in the `NPM_TOKEN` environment secret.
+- The GitHub `npm` environment and npm trusted publishing for every package.
 
 Configure npm trusted publishing separately for `@praxa/sdk`, `@praxa/cli`, and
 `@praxa/mcp-contracts` with these exact GitHub Actions values:
@@ -26,10 +25,12 @@ Configure npm trusted publishing separately for `@praxa/sdk`, `@praxa/cli`, and
 | Repository | `praxa` |
 | Workflow filename | `release.yml` |
 | Environment | `npm` |
+| Allowed action | `npm publish` |
 
 The workflow grants only `contents: write` and `id-token: write`, runs on a
-GitHub-hosted runner, and installs a trusted-publishing-compatible npm CLI.
-Once OIDC is active for all packages, remove the `NPM_TOKEN` fallback secret.
+GitHub-hosted runner with Node.js 24, and installs npm 12 (newer than the npm
+11.5.1 trusted-publishing minimum). It intentionally provides no npm token;
+publication must authenticate through the workflow's OIDC identity.
 
 ## Prepare and verify
 
@@ -58,17 +59,6 @@ The `Release packages` workflow then:
 The publish script is idempotent: an exact version already present on npm is
 verified and skipped. npm versions are immutable, so a changed release requires
 a new semantic version rather than overwriting an existing one.
-
-For the one-time bootstrap before trusted publishing is configured, a
-maintainer may use a granular npm token with publish access and explicitly
-disable local provenance:
-
-```sh
-PRAXA_RELEASE_DISABLE_PROVENANCE=1 npm run release:publish
-```
-
-This exception is for the initial package claim only. Normal releases should
-come from the GitHub workflow so npm records OIDC provenance.
 
 ## Registry verification
 

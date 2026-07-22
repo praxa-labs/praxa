@@ -1,5 +1,6 @@
 export * from "./client.js";
 export * from "./generated-contracts.js";
+export * from "./tools.js";
 
 export {
   AURA_CONTRACT_VERSION as PRAXA_CONTRACT_VERSION,
