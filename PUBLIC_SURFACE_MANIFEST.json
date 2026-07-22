@@ -7,8 +7,16 @@
       "sha256": "1da959b6d757ead978e5c98b56bce56cb87f313627e9bbb02d6d74f84d4db997"
     },
     {
+      "path": ".github/workflows/release.yml",
+      "sha256": "1a086be6e4d7d05d46625c0267a5f9a6d99f1646dc478a7c2b7bb2c9fbe58284"
+    },
+    {
       "path": ".gitignore",
-      "sha256": "eb7ceaed6aa8bf7723f1fba6929b7a5a587601ed469ea1b135e60cf884b91b7e"
+      "sha256": "e76c480837222bf5e49b66df947f7f7b669f2f1e6b0e94e9e7c8d839dedcb187"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "39b773794a97211eafdd42bd2ff3ef8f383ccf47b0271464de6e6239c570833b"
     },
     {
       "path": "CODE_OF_CONDUCT.md",
@@ -28,7 +36,7 @@
     },
     {
       "path": "docs/RELEASING.md",
-      "sha256": "4b88783fafa00dbeefe297fbf939f24af60037cc36e7b3289765eb07c5b727a2"
+      "sha256": "ec5a714c3129ebd958e8e4649b9ff340eb988c33cd5e3759e07f9ec203dae9c2"
     },
     {
       "path": "docs/SECURITY.md",
@@ -56,11 +64,11 @@
     },
     {
       "path": "package-lock.json",
-      "sha256": "d6679e39ad3c517f30fd373fd20b77f2736b4c0e1b6bfcd883f31e6710a1f289"
+      "sha256": "db51186484d17c26a694137f72c3a19805667d9ca15f0213c6f802cf24c3e719"
     },
     {
       "path": "package.json",
-      "sha256": "a7279fb80c76d8e425b25e7f722253ac2b601a241d540805d5bd268df0ea97a6"
+      "sha256": "9673a661f7460992f65777e913653a5ba3889c902483420be06c4b739487c512"
     },
     {
       "path": "packages/cli/bin/aura.mjs",
@@ -80,11 +88,11 @@
     },
     {
       "path": "packages/cli/package.json",
-      "sha256": "722bd55440acaa7c0286e6b9fe03b8e2f3c50e3af466b7a07d563044f99ee609"
+      "sha256": "50c50618886ddfb0ccb3fe9c5ffdd10aed695cce27c1034dc847d4b8eccaecf1"
     },
     {
       "path": "packages/cli/README.md",
-      "sha256": "185d8a094b27f0587d6ca0f8d2fcfec506b6529e8b46b34e491405034ef2c137"
+      "sha256": "d8c806283ac403d84d0ec1e7d8aba1644b9f64dd42e22586f27762cf9abe9dc6"
     },
     {
       "path": "packages/cli/src/arguments.ts",
@@ -104,11 +112,11 @@
     },
     {
       "path": "packages/mcp-contracts/package.json",
-      "sha256": "b4a5d53812d638b3553bc552fd369270a93f24f2b7de5ab1c682f4cf1df1ec90"
+      "sha256": "016b889019c744c82ee96cb68369d93d328b8f4f9b118080b7e3ff9b3d17489a"
     },
     {
       "path": "packages/mcp-contracts/README.md",
-      "sha256": "6339dd566ba65ed1eeac7f451d2018d795f73783be9585784183d83090224532"
+      "sha256": "27e1f4b9852b26e006a32f772edef8689c3ccc55260c5b81b83566f02c186982"
     },
     {
       "path": "packages/mcp-contracts/src/index.ts",
@@ -128,11 +136,11 @@
     },
     {
       "path": "packages/sdk/package.json",
-      "sha256": "364b569afa8739ce7618930b2cdd9e5872c7546a387bce8259314a87258dd9bb"
+      "sha256": "107102045bda799554cdaac29ad5ff9d8672261181e6ac89ca4d033dd1fe700b"
     },
     {
       "path": "packages/sdk/README.md",
-      "sha256": "d77c1f675933219afed155b79c6268a8977242acd0e95a718a2a9e857cf254e9"
+      "sha256": "955cb268365a98b0248c9d05366e71f0ca7fb7c9fce30836470d912b7486a4f1"
     },
     {
       "path": "packages/sdk/src/client.ts",
@@ -152,7 +160,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "8df69ef3af43b9877cd9253bee1c53f89b582cb665c4d309a98239364c664e28"
+      "sha256": "67aa49436d35d67ffb0e2ab21c5f40375533a8798adc78fb43c769bd24fcae50"
     },
     {
       "path": "scripts/check-packages.mjs",
@@ -160,7 +168,15 @@
     },
     {
       "path": "scripts/check-public-boundary.mjs",
-      "sha256": "a02120d54fa4f7c9d6639f877991c124c4934cab8f211f276b37feb8c7b0cd95"
+      "sha256": "47ec3fbc9bf39e9228f461732d13394e817bc4d3956bb8bd9108247b863a9ff4"
+    },
+    {
+      "path": "scripts/pack-release.mjs",
+      "sha256": "d046cccf3681d13438b59cc18bfeba4db7221fd8ebd1707194bf391b89f0d878"
+    },
+    {
+      "path": "scripts/publish-packages.mjs",
+      "sha256": "a0fbf184150a2f65ac0d7a3cbd9b1f16367aaa99b4207446c43e2b82506fbfd6"
     },
     {
       "path": "SECURITY.md",

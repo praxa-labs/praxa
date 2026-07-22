@@ -1,7 +1,7 @@
 {
   "name": "@praxa/sdk",
   "version": "0.1.0",
-  "description": "Credential-free TypeScript client for the Praxa Integration Gateway.",
+  "description": "TypeScript SDK for governed AI agents, durable missions, agent memory, capabilities, SSE events, and the Praxa agentic harness.",
   "type": "module",
   "license": "Apache-2.0",
   "homepage": "https://github.com/praxa-labs/praxa#readme",
@@ -13,7 +13,22 @@
   "bugs": {
     "url": "https://github.com/praxa-labs/praxa/issues"
   },
-  "keywords": ["praxa", "agent", "sdk", "oauth", "typescript"],
+  "keywords": [
+    "praxa",
+    "agentic-harness",
+    "ai-agent",
+    "agent-sdk",
+    "agent-orchestration",
+    "durable-agents",
+    "agent-memory",
+    "capability-discovery",
+    "human-in-the-loop",
+    "tool-execution",
+    "oauth",
+    "sse",
+    "idempotency",
+    "typescript"
+  ],
   "sideEffects": false,
   "files": ["dist", "README.md", "LICENSE", "NOTICE"],
   "exports": {
@@ -33,7 +48,8 @@
   },
   "publishConfig": {
     "access": "public",
-    "provenance": true
+    "provenance": true,
+    "registry": "https://registry.npmjs.org/"
   },
   "engines": {
     "node": ">=20"

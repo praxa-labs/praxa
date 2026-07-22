@@ -1,7 +1,7 @@
 {
   "name": "@praxa/cli",
   "version": "0.1.0",
-  "description": "Credential-free command line client for the Praxa Integration Gateway.",
+  "description": "CLI for governed AI agent missions, gateway diagnostics, and the Praxa agentic harness.",
   "type": "module",
   "license": "Apache-2.0",
   "homepage": "https://github.com/praxa-labs/praxa#readme",
@@ -13,7 +13,19 @@
   "bugs": {
     "url": "https://github.com/praxa-labs/praxa/issues"
   },
-  "keywords": ["praxa", "agent", "cli", "oauth"],
+  "keywords": [
+    "praxa",
+    "agentic-harness",
+    "ai-agent",
+    "agent-cli",
+    "agent-orchestration",
+    "durable-agents",
+    "automation",
+    "human-in-the-loop",
+    "oauth",
+    "idempotency",
+    "command-line"
+  ],
   "files": ["bin", "dist", "README.md", "LICENSE", "NOTICE"],
   "bin": {
     "praxa": "./bin/praxa.mjs",
@@ -31,7 +43,8 @@
   },
   "publishConfig": {
     "access": "public",
-    "provenance": true
+    "provenance": true,
+    "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
     "@praxa/sdk": "0.1.0"

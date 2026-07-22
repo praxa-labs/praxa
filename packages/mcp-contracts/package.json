@@ -1,7 +1,7 @@
 {
   "name": "@praxa/mcp-contracts",
   "version": "0.1.0",
-  "description": "Credential-free MCP 2025-03-26 contracts for Praxa.",
+  "description": "MCP contracts for governed AI agent tools, OAuth scopes, and the Praxa agentic harness.",
   "type": "module",
   "license": "Apache-2.0",
   "homepage": "https://github.com/praxa-labs/praxa#readme",
@@ -13,7 +13,20 @@
   "bugs": {
     "url": "https://github.com/praxa-labs/praxa/issues"
   },
-  "keywords": ["praxa", "agent", "mcp", "model-context-protocol"],
+  "keywords": [
+    "praxa",
+    "agentic-harness",
+    "ai-agent",
+    "agent-tools",
+    "mcp",
+    "model-context-protocol",
+    "json-rpc",
+    "tool-discovery",
+    "agent-orchestration",
+    "human-in-the-loop",
+    "oauth",
+    "typescript"
+  ],
   "sideEffects": false,
   "files": ["dist", "README.md", "LICENSE", "NOTICE"],
   "exports": {
@@ -29,7 +42,8 @@
   },
   "publishConfig": {
     "access": "public",
-    "provenance": true
+    "provenance": true,
+    "registry": "https://registry.npmjs.org/"
   },
   "engines": {
     "node": ">=20"

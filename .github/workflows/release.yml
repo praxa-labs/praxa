@@ -1,0 +1,52 @@
+name: Release packages
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: Publish package versions that are not already on npm
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+  id-token: write
+
+concurrency:
+  group: npm-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    environment: npm
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          cache: npm
+      - name: Use trusted-publishing-compatible npm
+        run: npm install --global npm@12.0.1
+      - run: npm ci
+      - run: npm run verify
+      - run: npm run release:pack
+      - name: Publish packages to npm
+        if: github.event_name == 'release' || inputs.publish
+        run: npm run release:publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - uses: actions/upload-artifact@v6
+        with:
+          name: npm-packages-${{ github.sha }}
+          path: release-assets/*
+          if-no-files-found: error
+      - name: Attach packages and checksums to the GitHub Release
+        if: github.event_name == 'release'
+        run: gh release upload "${GITHUB_REF_NAME}" release-assets/* --clobber
+        env:
+          GH_TOKEN: ${{ github.token }}

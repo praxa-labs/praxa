@@ -1,17 +1,22 @@
 # `@praxa/cli`
 
-Thin command-line adapter over `@praxa/sdk`. The CLI neither stores provider
-credentials nor calls providers directly.
+Command-line interface for the Praxa agentic harness. Create, inspect, and
+cancel durable AI agent missions or diagnose a hosted Integration Gateway from
+shell scripts and CI without storing provider credentials.
+
+The CLI is a thin adapter over `@praxa/sdk`; deterministic authorization,
+provider execution, and verification remain server-side.
 
 ## Install
 
 ```sh
 npm install --global @praxa/cli
+praxa version
 ```
 
-The package is registry-ready but is not claimed as published until a separate
-npm release is completed and verified. From a source checkout, run `npm ci`,
-`npm run build`, and then `node packages/cli/bin/praxa.mjs version`.
+Node.js 20 or newer is supported. `praxa version` is a no-network installation
+check that prints the exact OpenAPI version, wire-contract version, and OpenAPI
+source hash.
 
 ## Configure
 
@@ -34,6 +39,8 @@ praxa mission create --input mission.json --idempotency-key <uuid>
 praxa mission cancel --run-id <uuid> --reason <text> --idempotency-key <uuid>
 ```
 
-`praxa version` is a no-network installation smoke. It prints the exact OpenAPI
-version, wire contract version, and OpenAPI source hash. `praxa doctor` performs
-an authenticated read-only gateway check.
+`praxa doctor` performs an authenticated, read-only gateway check. Mission
+mutations require stable idempotency keys so a caller can safely retry without
+silently duplicating consequential work.
+
+Repository: [praxa-labs/praxa](https://github.com/praxa-labs/praxa)

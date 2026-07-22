@@ -65,8 +65,16 @@ for (const [relative, name] of expectedPackages) {
   assert.equal(manifest.name, name);
   assert.equal(manifest.private, undefined);
   assert.equal(manifest.license, "Apache-2.0");
+  assert.equal(manifest.repository?.url, "git+https://github.com/praxa-labs/praxa.git");
   assert.equal(manifest.publishConfig?.access, "public");
   assert.equal(manifest.publishConfig?.provenance, true);
+  assert.equal(manifest.publishConfig?.registry, "https://registry.npmjs.org/");
+  assert.ok(manifest.keywords?.includes("agentic-harness"));
+  assert.ok(manifest.keywords?.length >= 10);
+}
+for (const relative of ["packages/cli/bin/praxa.mjs", "packages/cli/bin/aura.mjs"]) {
+  const stat = await lstat(path.join(root, relative));
+  assert.notEqual(stat.mode & 0o111, 0, `CLI binary must be executable: ${relative}`);
 }
 
 const surface = JSON.parse(await readFile(path.join(root, "PUBLIC_SURFACE_MANIFEST.json"), "utf8"));

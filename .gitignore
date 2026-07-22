@@ -1,6 +1,7 @@
 node_modules/
 packages/*/dist/
 *.tgz
+release-assets/
 .DS_Store
 .env
 .env.*
