@@ -3,6 +3,8 @@ import { spawnSync } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { parseNpmPackJson } from "./npm-pack-json.mjs";
+
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const packages = [
   ["sdk", "@praxa/sdk"],
@@ -17,7 +19,7 @@ for (const [directory, expectedName] of packages) {
     { cwd: path.join(root, "packages", directory), encoding: "utf8" },
   );
   assert.equal(result.status, 0, result.stderr);
-  const packed = JSON.parse(result.stdout)[0];
+  const packed = parseNpmPackJson(result.stdout, expectedName);
   assert.equal(packed.name, expectedName);
   assert.ok(packed.files.length > 0);
   assert.ok(packed.files.length < 40, `${expectedName} tarball is unexpectedly large`);

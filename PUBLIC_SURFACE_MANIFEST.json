@@ -164,15 +164,19 @@
     },
     {
       "path": "scripts/check-packages.mjs",
-      "sha256": "26084a887e3769b346b1214ea193b58a1ecbc6e72f132162663c103cf027ebbc"
+      "sha256": "5c62704f92e53c099ef236a96bdf3d0c2b1e8154b90e2418053fc7cb6ec07a3f"
     },
     {
       "path": "scripts/check-public-boundary.mjs",
       "sha256": "47ec3fbc9bf39e9228f461732d13394e817bc4d3956bb8bd9108247b863a9ff4"
     },
     {
+      "path": "scripts/npm-pack-json.mjs",
+      "sha256": "c53606acf2df1e32e497887eff9fc71182108bc212d073be805d9c01c30f5c02"
+    },
+    {
       "path": "scripts/pack-release.mjs",
-      "sha256": "d046cccf3681d13438b59cc18bfeba4db7221fd8ebd1707194bf391b89f0d878"
+      "sha256": "3aee91f17041118182a9854c3b14d02d3095d0ad00a3d5bb3f22a72296df3315"
     },
     {
       "path": "scripts/publish-packages.mjs",
@@ -181,6 +185,10 @@
     {
       "path": "SECURITY.md",
       "sha256": "3dac977c4d732adf6273a08b628ce439ae9671b7d89baf844f6926f5a38621c7"
+    },
+    {
+      "path": "tests/npm-pack-json.test.mjs",
+      "sha256": "6d7f6b5af0d35ed3b2d0293ca5781aecbed22df92e461a6ea8950c865cffb7f1"
     },
     {
       "path": "tests/public-api.test.mjs",

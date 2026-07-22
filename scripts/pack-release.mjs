@@ -5,6 +5,8 @@ import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { parseNpmPackJson } from "./npm-pack-json.mjs";
+
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const assetDirectory = path.join(root, "release-assets");
 const packages = ["sdk", "mcp-contracts", "cli"];
@@ -28,7 +30,7 @@ for (const directory of packages) {
     { cwd: packageDirectory, encoding: "utf8" },
   );
   assert.equal(result.status, 0, result.stderr || result.stdout);
-  const packed = JSON.parse(result.stdout)[0];
+  const packed = parseNpmPackJson(result.stdout, manifest.name);
   assert.equal(packed.name, manifest.name);
   assert.equal(packed.version, manifest.version);
   assets.push(packed.filename);
