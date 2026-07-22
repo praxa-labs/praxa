@@ -139,6 +139,22 @@ test("CLI configures a project-scoped agent client without embedding a token", a
   }
 });
 
+test("release authentication is scoped to publishing and retains provenance", async () => {
+  const workflow = await readFile(new URL("../.github/workflows/release.yml", import.meta.url), "utf8");
+  const releasing = await readFile(new URL("../docs/RELEASING.md", import.meta.url), "utf8");
+  assert.match(workflow, /id-token: write/u);
+  assert.match(workflow, /Publish packages to npm[\s\S]*NODE_AUTH_TOKEN: \$\{\{ secrets\.NPM_TOKEN \}\}/u);
+  assert.equal(workflow.match(/NODE_AUTH_TOKEN:/gu)?.length, 1);
+  assert.match(releasing, /exposed as `NODE_AUTH_TOKEN` only to the publish step/u);
+  assert.match(releasing, /After one successful\s+OIDC-authenticated release[\s\S]*delete the `NPM_TOKEN` environment secret/u);
+  for (const packageName of ["sdk", "cli", "mcp-contracts"]) {
+    const manifest = JSON.parse(
+      await readFile(new URL(`../packages/${packageName}/package.json`, import.meta.url), "utf8"),
+    );
+    assert.equal(manifest.publishConfig.provenance, true);
+  }
+});
+
 test("every public MCP tool maps to a governed route and no direct executor", () => {
   assert.ok(PRAXA_MCP_TOOLS.length > 0);
   for (const tool of PRAXA_MCP_TOOLS) {
