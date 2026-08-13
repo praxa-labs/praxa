@@ -55,6 +55,16 @@ shasum -a 256 --check SHA256SUMS
 Inspect each package file list and the generated tarballs. Confirm versions,
 changelog, compatibility notes, registry ownership, and the release diff.
 
+For a GitHub `release` event, or a manual dispatch with `publish: true`, the
+workflow, pack script, and publish script all require `GITHUB_REF_NAME` to equal
+`vX.Y.Z` for the root package version before creating assets or contacting npm.
+The workflow passes that publish intent explicitly to all three gates. A manual
+dispatch with `publish: false` remains usable from a branch for verification
+and packing; ordinary local `release:pack` also remains usable. The publication
+script itself always treats execution as a publish request, so a direct local
+`release:publish` also fails before an npm lookup unless `GITHUB_REF_NAME`
+equals the exact version tag.
+
 ## Publish
 
 Create and publish the matching GitHub Release from an annotated `vX.Y.Z` tag.
@@ -62,13 +72,20 @@ The `Release packages` workflow then:
 
 1. installs from the lockfile and runs the complete public verification suite;
 2. builds checksummed tarballs;
-3. publishes only package versions that do not already exist on npm;
+3. publishes those exact tarballs from `release-assets/`, then verifies their
+   registry SHA-512 integrity; it publishes only package versions that do not
+   already exist on npm, or skips
+   an existing version only when its registry integrity exactly matches the
+   release tarball bytes;
 4. uploads the tarballs and checksums as workflow artifacts; and
 5. attaches them to the GitHub Release.
 
-The publish script is idempotent: an exact version already present on npm is
-verified and skipped. npm versions are immutable, so a changed release requires
-a new semantic version rather than overwriting an existing one.
+The publish script is idempotent only for byte-identical reuse: it computes the
+SHA-512 SRI directly from each checksummed release tarball and compares it with
+`dist.integrity` before a skip and after a publish. A mismatch fails with
+`published_digest_mismatch`; it is never silently skipped. npm versions are
+immutable, so changed bytes require a new semantic version rather than
+overwriting an existing one.
 
 ## Registry verification
 

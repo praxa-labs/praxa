@@ -4,7 +4,7 @@ Praxa can be added to an existing repository without copying secrets into
 source control:
 
 ```sh
-npx @praxa/cli@0.2.0 init
+npx --package=@praxa/cli@0.3.0 praxa init
 ```
 
 The default target set is Codex, Claude Code, Cursor, VS Code, and an
@@ -15,9 +15,9 @@ entry unless `--force` is supplied.
 ## Preview or select clients
 
 ```sh
-npx @praxa/cli@0.2.0 init --dry-run --json
-npx @praxa/cli@0.2.0 init --target codex --target cursor
-npx @praxa/cli@0.2.0 init --project-dir ./my-agent
+npx --package=@praxa/cli@0.3.0 praxa init --dry-run --json
+npx --package=@praxa/cli@0.3.0 praxa init --target codex --target cursor
+npx --package=@praxa/cli@0.3.0 praxa init --project-dir ./my-agent
 ```
 
 Generated files:
@@ -50,7 +50,7 @@ If the gateway's authorization server and client registration are live, allow
 the selected MCP client to perform its native browser OAuth flow:
 
 ```sh
-npx @praxa/cli@0.2.0 init --auth oauth
+npx --package=@praxa/cli@0.3.0 praxa init --auth oauth
 ```
 
 OAuth mode omits manual authorization headers. The client then discovers the
@@ -63,7 +63,7 @@ Pass an exact HTTPS origin; paths, query strings, fragments, and embedded
 credentials are rejected:
 
 ```sh
-npx @praxa/cli@0.2.0 init --base-url https://agents.example.com
+npx --package=@praxa/cli@0.3.0 praxa init --base-url https://agents.example.com
 ```
 
 Run `praxa init --dry-run` first in repositories with existing client

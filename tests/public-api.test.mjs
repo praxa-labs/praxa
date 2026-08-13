@@ -21,6 +21,7 @@ import {
   MCP_LEGACY_PROTOCOL_VERSION,
   MCP_PROTOCOL_VERSION,
   PRAXA_MCP_TOOLS,
+  MCP_SERVER_VERSION,
   praxaMcpTool,
 } from "../packages/mcp-contracts/dist/index.js";
 
@@ -31,6 +32,8 @@ test("Praxa exports preserve the established Aura wire compatibility", () => {
   assert.equal(PRAXA_MCP_TOOLS, AURA_MCP_TOOLS);
   assert.equal(MCP_PROTOCOL_VERSION, "2025-11-25");
   assert.equal(MCP_LEGACY_PROTOCOL_VERSION, "2025-03-26");
+  assert.equal(MCP_SERVER_VERSION, "0.3.0");
+  assert.equal(PRAXA_MCP_TOOLS.length, 12);
   assert.equal(praxaMcpTool("aura_create_mission")?.requiredScope, "missions:write");
 });
 
@@ -134,19 +137,49 @@ test("CLI configures a project-scoped agent client without embedding a token", a
     assert.match(config, /url = "https:\/\/agents\.praxa\.io\/mcp"/u);
     assert.match(config, /bearer_token_env_var = "PRAXA_ACCESS_TOKEN"/u);
     assert.doesNotMatch(config, /synthetic-oauth-token/u);
+    const setup = await readFile(path.join(root, ".praxa/SETUP.md"), "utf8");
+    assert.match(setup, /npx --package=@praxa\/cli@0\.3\.0 praxa doctor/u);
+    assert.doesNotMatch(setup, /npx @praxa\/cli/u);
+    assert.ok(initialized.nextSteps.every((step) => !step.includes("npx @praxa/cli")));
   } finally {
     await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("published CLI instructions always name the praxa bin explicitly", async () => {
+  for (const relative of [
+    "README.md",
+    "packages/cli/README.md",
+    "docs/AGENT_SETUP.md",
+    "docs/AUTHENTICATION.md",
+    "examples/integrations/frameworks.md",
+    "packages/cli/src/init.ts",
+  ]) {
+    const source = await readFile(new URL(`../${relative}`, import.meta.url), "utf8");
+    assert.doesNotMatch(source, /npx @praxa\/cli/u, `${relative} contains an ambiguous dual-bin npx command`);
   }
 });
 
 test("release authentication is scoped to publishing and retains provenance", async () => {
   const workflow = await readFile(new URL("../.github/workflows/release.yml", import.meta.url), "utf8");
   const releasing = await readFile(new URL("../docs/RELEASING.md", import.meta.url), "utf8");
+  const publishing = await readFile(new URL("../scripts/publish-packages.mjs", import.meta.url), "utf8");
+  const packing = await readFile(new URL("../scripts/pack-release.mjs", import.meta.url), "utf8");
   assert.match(workflow, /id-token: write/u);
   assert.match(workflow, /Publish packages to npm[\s\S]*NODE_AUTH_TOKEN: \$\{\{ secrets\.NPM_TOKEN \}\}/u);
   assert.equal(workflow.match(/NODE_AUTH_TOKEN:/gu)?.length, 1);
   assert.match(releasing, /exposed as `NODE_AUTH_TOKEN` only to the publish step/u);
   assert.match(releasing, /After one successful\s+OIDC-authenticated release[\s\S]*delete the `NPM_TOKEN` environment secret/u);
+  assert.match(publishing, /release-assets/u);
+  assert.match(publishing, /\["publish", tarball/u);
+  assert.doesNotMatch(publishing, /"--workspace"/u);
+  assert.match(publishing, /Published registry integrity verified/u);
+  assert.match(releasing, /publishes those exact tarballs[\s\S]*registry SHA-512 integrity/u);
+  assert.match(workflow, /Validate release tag matches package version[\s\S]*node scripts\/check-release-ref\.mjs[\s\S]*PRAXA_RELEASE_PUBLISH_REQUESTED/u);
+  assert.match(workflow, /if: github\.event_name == 'release' \|\| inputs\.publish/u);
+  assert.equal(workflow.match(/PRAXA_RELEASE_PUBLISH_REQUESTED:/gu)?.length, 3);
+  assert.match(packing, /assertReleaseRefMatchesVersion/u);
+  assert.match(publishing, /assertReleaseRefMatchesVersion/u);
   for (const packageName of ["sdk", "cli", "mcp-contracts"]) {
     const manifest = JSON.parse(
       await readFile(new URL(`../packages/${packageName}/package.json`, import.meta.url), "utf8"),

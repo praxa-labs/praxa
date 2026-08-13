@@ -74,7 +74,7 @@ const tools = praxaTools.map((definition) => tool(
 
 ## Codex, Claude Code, Cursor, and VS Code
 
-Run `npx @praxa/cli@0.2.0 init`. These clients connect directly to `/mcp`, so
+Run `npx --package=@praxa/cli@0.3.0 praxa init`. These clients connect directly to `/mcp`, so
 no framework adapter is needed. Review the generated `.praxa/SETUP.md`, inject
 or acquire a delegated token, restart the client, and ask it to list tools
 before invoking a mutation.

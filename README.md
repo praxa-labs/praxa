@@ -13,7 +13,7 @@ purpose-scoped memory, stream mission events, inspect causal traces, and
 request human-governed actions without embedding provider credentials.
 
 The packages provide the public integration layer for AI agent orchestration.
-Deterministic authorization, tool execution, provider adapters, credential
+Deterministic authorization, tool execution, write-capable provider adapters, credential
 isolation, independent verification, and durable recovery remain behind the
 hosted Praxa Integration Gateway.
 
@@ -21,8 +21,8 @@ hosted Praxa Integration Gateway.
 
 | Package | Install | Capability |
 | --- | --- | --- |
-| [`@praxa/sdk`](https://www.npmjs.com/package/@praxa/sdk) | `npm install @praxa/sdk` | Typed HTTP/SSE client plus framework-neutral governed agent tools |
-| [`@praxa/cli`](https://www.npmjs.com/package/@praxa/cli) | `npx @praxa/cli init` | One-command setup for agent clients plus gateway and mission operations |
+| [`@praxa/sdk`](https://www.npmjs.com/package/@praxa/sdk) | `npm install @praxa/sdk` | Typed HTTP/SSE client, governed agent tools, and dependency-free read-only memory federation |
+| [`@praxa/cli`](https://www.npmjs.com/package/@praxa/cli) | `npx --package=@praxa/cli@0.3.0 praxa init` | Agent-client setup, local memory-source configuration, gateway diagnostics, and mission operations |
 | [`@praxa/mcp-contracts`](https://www.npmjs.com/package/@praxa/mcp-contracts) | `npm install @praxa/mcp-contracts` | MCP 2025-11-25 tool metadata, OAuth scopes, JSON-RPC types, and governed route mappings |
 
 ## Agentic harness capabilities
@@ -66,7 +66,7 @@ independently reviewable runs.
 Run this from an existing project:
 
 ```sh
-npx @praxa/cli@0.2.0 init
+npx --package=@praxa/cli@0.3.0 praxa init
 ```
 
 It safely merges project-scoped Praxa MCP configuration for Codex, Claude
@@ -118,6 +118,41 @@ See the [TypeScript example](examples/typescript/mission.ts), [authentication
 guide](docs/AUTHENTICATION.md), [architecture guide](docs/ARCHITECTURE.md), and
 [OpenAPI description](openapi/praxa-api.yaml).
 
+## Read-only memory federation
+
+`@praxa/sdk/memory` federates caller-supplied read clients for Mem0, Zep,
+Graphiti, LangGraph, Letta, and OpenAI Agents. Every adapter requires an
+explicit namespace mapper. The package creates no provider client, reads no
+credential or environment variable, chooses no endpoint, and exposes no write
+or migration operation.
+
+```ts
+import { MemoryFederation, createMem0MemorySource } from "@praxa/sdk/memory";
+
+const memory = new MemoryFederation({
+  sources: [createMem0MemorySource({
+    client: mem0,
+    mapNamespace: ({ subjectId }) => ({ userId: subjectId }),
+  })],
+});
+
+const recalled = await memory.recall({
+  query: "What does this user prefer?",
+  namespace: { tenantId: "acme", subjectId: "user-123" },
+});
+```
+
+Results retain provider-local ranks, scores, IDs, timestamps, and provenance.
+Exact normalized duplicates are grouped without discarding source references;
+different claims, including contradictions, remain separate. Unified ordering
+uses ordinal reciprocal-rank fusion and never compares raw provider scores.
+See [Memory federation](docs/MEMORY-FEDERATION.md).
+
+Portable import/export code can validate provider-neutral records with
+`createMemoryRecordEnvelopeV1` or `parseMemoryRecordEnvelopeV1`. These local
+helpers implement the `/v1/memory` record shape; they do not perform an HTTP
+request or claim that a hosted endpoint is deployed.
+
 ## CLI
 
 ```sh
@@ -126,6 +161,9 @@ praxa version
 
 praxa init --dry-run
 praxa init
+
+praxa memory source add mem0 --mode federated --dry-run
+praxa memory sync plan --dry-run
 
 export PRAXA_ACCESS_TOKEN="<short-lived delegated OAuth token>"
 praxa doctor
@@ -179,7 +217,8 @@ TypeScript SDK, CLI, or MCP client
 ```
 
 The open-source packages contain no provider credentials, policy internals,
-broker implementation, provider adapters, or verifier credentials. Models and
+broker implementation, credential-owning or write-capable provider adapters,
+or verifier credentials. Read adapters accept caller-owned clients only. Models and
 clients propose; deterministic server policy authorizes; the private broker
 executes; independent evidence verifies.
 

@@ -2,12 +2,15 @@
 import { readFile } from "node:fs/promises";
 import { parsePraxaCliArguments } from "../dist/arguments.js";
 import { initializePraxaProject, loadPraxaProjectBaseUrl } from "../dist/init.js";
+import { addPraxaMemorySource, planPraxaMemorySync } from "../dist/memory.js";
 
 const help = `Praxa CLI
 
 Usage:
   praxa init [--base-url URL] [--target TARGET] [--auth environment|oauth]
              [--project-dir DIR] [--dry-run] [--force] [--json]
+  praxa memory source add PROVIDER --mode federated [--project-dir DIR] [--dry-run] [--json]
+  praxa memory sync plan --dry-run [--project-dir DIR] [--json]
   praxa doctor [--base-url URL]
   praxa mission submit --intent TEXT --idempotency-key KEY [--base-url URL]
   praxa mission get --run-id ID [--base-url URL]
@@ -83,6 +86,21 @@ async function main() {
     for (const step of initialized.nextSteps) process.stdout.write(`  next: ${step}\n`);
     return;
   }
+  if (command.kind === "memory-source-add") {
+    const result = await addPraxaMemorySource({
+      projectDirectory: command.projectDirectory,
+      provider: command.provider,
+      mode: command.mode,
+      dryRun: command.dryRun,
+    });
+    process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
+    return;
+  }
+  if (command.kind === "memory-sync-plan") {
+    const result = await planPraxaMemorySync({ projectDirectory: command.projectDirectory, dryRun: command.dryRun });
+    process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
+    return;
+  }
   const {
     PraxaClient,
     PRAXA_CONTRACT_VERSION,
@@ -91,7 +109,7 @@ async function main() {
   } = await loadSdk();
   if (command.kind === "version") {
     process.stdout.write(`${JSON.stringify({
-      cliVersion: "0.2.0",
+      cliVersion: "0.3.0",
       openapiVersion: PRAXA_OPENAPI_VERSION,
       contractVersion: PRAXA_CONTRACT_VERSION,
       openapiSha256: PRAXA_OPENAPI_SHA256,

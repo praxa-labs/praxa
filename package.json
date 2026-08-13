@@ -1,6 +1,6 @@
 {
   "name": "praxa-sdk-monorepo",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "description": "Open-source TypeScript SDK, CLI, and MCP contracts for the Praxa agentic harness and governed AI agent orchestration.",
   "type": "module",
@@ -27,6 +27,7 @@
   "scripts": {
     "build": "npm run build --workspaces --if-present",
     "test": "node --test tests/*.test.mjs",
+    "update:surface": "node scripts/update-public-surface.mjs",
     "check:boundary": "node scripts/check-public-boundary.mjs",
     "check:packages": "node scripts/check-packages.mjs",
     "release:pack": "node scripts/pack-release.mjs",
@@ -39,5 +40,10 @@
   },
   "engines": {
     "node": ">=20"
+  },
+  "dependencies": {
+    "@praxa/cli": "^0.3.0",
+    "@praxa/mcp-contracts": "^0.3.0",
+    "@praxa/sdk": "^0.3.0"
   }
 }

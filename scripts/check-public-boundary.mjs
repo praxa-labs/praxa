@@ -14,7 +14,7 @@ const forbiddenSegments = new Set([
   "ml",
   "runbooks",
 ]);
-const ignoredDirectories = new Set([".git", "node_modules", "dist"]);
+const ignoredDirectories = new Set([".git", "node_modules", "dist", "release-assets"]);
 const secretPatterns = [
   /-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/u,
   /\bAKIA[0-9A-Z]{16}\b/u,
@@ -79,6 +79,12 @@ for (const relative of ["packages/cli/bin/praxa.mjs", "packages/cli/bin/aura.mjs
 
 const surface = JSON.parse(await readFile(path.join(root, "PUBLIC_SURFACE_MANIFEST.json"), "utf8"));
 assert.equal(surface.schemaVersion, "praxa-public-surface-v1");
+const manifestPaths = surface.files.map((entry) => entry.path);
+assert.deepEqual(
+  manifestPaths,
+  files.filter((relative) => relative !== "PUBLIC_SURFACE_MANIFEST.json").sort(),
+  "public surface manifest must include every non-generated repository file exactly once",
+);
 for (const entry of surface.files) {
   const bytes = await readFile(path.join(root, entry.path));
   assert.equal(createHash("sha256").update(bytes).digest("hex"), entry.sha256, `hash mismatch: ${entry.path}`);

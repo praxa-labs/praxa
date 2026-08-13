@@ -22,7 +22,7 @@ reviewed first-party session flow and keep them out of durable client storage.
 ## CLI
 
 ```sh
-npx @praxa/cli@0.2.0 init --base-url https://your-praxa-gateway.example
+npx --package=@praxa/cli@0.3.0 praxa init --base-url https://your-praxa-gateway.example
 export PRAXA_ACCESS_TOKEN="<short-lived delegated token>"
 praxa doctor
 ```

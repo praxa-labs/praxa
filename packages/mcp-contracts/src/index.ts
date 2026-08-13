@@ -5,7 +5,7 @@ export const MCP_SUPPORTED_PROTOCOL_VERSIONS = [
   MCP_LEGACY_PROTOCOL_VERSION,
 ] as const;
 export const MCP_SERVER_NAME = "aura-agent-os" as const;
-export const MCP_SERVER_VERSION = "0.2.0" as const;
+export const MCP_SERVER_VERSION = "0.3.0" as const;
 
 export type JsonRpcId = string | number;
 export type JsonRpcRequest = Readonly<{

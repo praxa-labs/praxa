@@ -23,7 +23,7 @@ source hash.
 From an existing project:
 
 ```sh
-npx @praxa/cli@0.2.0 init
+npx --package=@praxa/cli@0.3.0 praxa init
 ```
 
 The default creates project-scoped configuration for Codex, Claude Code,
@@ -56,6 +56,8 @@ provider API key in either variable.
 ```text
 praxa version
 praxa init [--target <client>] [--auth environment|oauth] [--dry-run]
+praxa memory source add <provider> --mode federated [--dry-run]
+praxa memory sync plan --dry-run
 praxa doctor
 praxa mission submit --intent <text> --idempotency-key <key>
 praxa mission get --run-id <uuid>
@@ -68,5 +70,13 @@ submit` records free text for deterministic compilation and performs no action.
 `mission create` is the advanced canonical-GoalSpec path. Mutations require
 stable idempotency keys so a caller can safely retry without silently
 duplicating work.
+
+Memory providers are `mem0`, `zep`, `graphiti`, `langgraph`, `letta`, and
+`openai_agents`. Source add writes only `.praxa/memory.json` provider metadata;
+it serializes concurrent updates with a project-local lock and atomic rename.
+`--dry-run` writes nothing. Sync plan is always dry-run and non-executable.
+Mirror, cutover, and sync execution are not implemented and fail explicitly.
+No command accepts or stores a provider credential or claims a provider-side
+operation occurred.
 
 Repository: [praxa-labs/praxa](https://github.com/praxa-labs/praxa)

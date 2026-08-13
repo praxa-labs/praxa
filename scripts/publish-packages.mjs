@@ -4,12 +4,40 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { parseNpmViewVersion } from "./npm-registry-json.mjs";
+import {
+  assertPublishedPackageIntegrity,
+  npmPackageTarballFilename,
+  npmTarballIntegrity,
+  parseNpmViewManifest,
+} from "./npm-registry-json.mjs";
+import { assertReleaseRefMatchesVersion } from "./release-context.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const registry = "https://registry.npmjs.org/";
+const assetDirectory = path.join(root, "release-assets");
 const packages = ["sdk", "mcp-contracts", "cli"];
 const rootManifest = JSON.parse(await readFile(path.join(root, "package.json"), "utf8"));
+
+assertReleaseRefMatchesVersion({
+  eventName: process.env.GITHUB_EVENT_NAME,
+  refName: process.env.GITHUB_REF_NAME,
+  version: rootManifest.version,
+  publishRequested: true,
+});
+
+function publishedManifest(specifier, expectedVersion) {
+  const lookup = spawnSync(
+    "npm",
+    ["view", specifier, "version", "dist.integrity", "--json", `--registry=${registry}`],
+    { cwd: root, encoding: "utf8" },
+  );
+  if (lookup.status === 0) return parseNpmViewManifest(lookup.stdout, expectedVersion);
+  const failure = `${lookup.stdout}\n${lookup.stderr}`;
+  if (/E404|404 Not Found/u.test(failure)) return undefined;
+  throw new Error(`Registry lookup failed for ${specifier}: ${failure}`);
+}
+
+const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
 
 for (const directory of packages) {
   const manifest = JSON.parse(await readFile(path.join(root, "packages", directory, "package.json"), "utf8"));
@@ -19,30 +47,30 @@ for (const directory of packages) {
   }
 
   const specifier = `${manifest.name}@${manifest.version}`;
-  const lookup = spawnSync(
-    "npm",
-    ["view", specifier, "version", "--json", `--registry=${registry}`],
-    { cwd: root, encoding: "utf8" },
-  );
-  if (lookup.status === 0) {
-    parseNpmViewVersion(lookup.stdout, manifest.version);
-    console.log(`Already published: ${specifier}`);
+  const tarball = path.join(assetDirectory, npmPackageTarballFilename(manifest.name, manifest.version));
+  const tarballBytes = await readFile(tarball);
+  const packed = { name: manifest.name, version: manifest.version, integrity: npmTarballIntegrity(tarballBytes) };
+  const existing = publishedManifest(specifier, manifest.version);
+  if (existing !== undefined) {
+    const published = existing;
+    assertPublishedPackageIntegrity(manifest.name, packed, published);
+    console.log(`Already published with matching integrity: ${specifier}`);
     continue;
   }
-  const lookupFailure = `${lookup.stdout}\n${lookup.stderr}`;
-  assert.match(lookupFailure, /E404|404 Not Found/u, `Registry lookup failed for ${specifier}: ${lookupFailure}`);
 
-  const publishArguments = [
-    "publish",
-    "--workspace",
-    manifest.name,
-    "--access",
-    "public",
-    `--registry=${registry}`,
-  ];
+  const publishArguments = ["publish", tarball, "--access", "public", `--registry=${registry}`];
   if (process.env.PRAXA_RELEASE_DISABLE_PROVENANCE === "1") {
     publishArguments.push("--provenance=false");
   }
-  const published = spawnSync("npm", publishArguments, { cwd: root, stdio: "inherit" });
-  assert.equal(published.status, 0, `npm publish failed for ${specifier}`);
+  const publication = spawnSync("npm", publishArguments, { cwd: root, stdio: "inherit" });
+  assert.equal(publication.status, 0, `npm publish failed for ${specifier}`);
+
+  let published;
+  for (let attempt = 0; attempt < 6 && published === undefined; attempt += 1) {
+    published = publishedManifest(specifier, manifest.version);
+    if (published === undefined && attempt < 5) await delay(2_000);
+  }
+  assert.notEqual(published, undefined, `Published package did not become readable from npm: ${specifier}`);
+  assertPublishedPackageIntegrity(manifest.name, packed, published);
+  console.log(`Published registry integrity verified: ${specifier}`);
 }

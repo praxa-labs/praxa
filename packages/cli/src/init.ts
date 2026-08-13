@@ -201,7 +201,7 @@ Praxa is configured for \`${baseUrl}\` in: ${targets.map((target) => `\`${target
 
 1. ${authentication}
 2. Restart the selected agent client and enable or trust the project-scoped \`praxa\` MCP server.
-3. Run \`npx @praxa/cli doctor\` to verify the delegated, read-only gateway path.
+3. Run \`npx --package=@praxa/cli@0.3.0 praxa doctor\` to verify the delegated, read-only gateway path.
 4. Ask the agent to list Praxa tools before creating a mission. Mutations require explicit idempotency keys and remain subject to server policy.
 
 The generated files contain endpoint metadata only. Models propose; deterministic policy authorizes; the broker executes; independent evidence verifies external effects.
@@ -309,8 +309,8 @@ export async function initializePraxaProject(options: PraxaInitOptions): Promise
     dryRun: options.dryRun,
     files: files.map((file) => ({ path: file.relativePath, action: file.action })),
     nextSteps: options.authMode === "oauth"
-      ? ["Authenticate Praxa from the selected MCP client", "Restart the client", "Run: npx @praxa/cli doctor"]
-      : ["Inject PRAXA_ACCESS_TOKEN without committing it", "Restart the selected client", "Run: npx @praxa/cli doctor"],
+      ? ["Authenticate Praxa from the selected MCP client", "Restart the client", "Run: npx --package=@praxa/cli@0.3.0 praxa doctor"]
+      : ["Inject PRAXA_ACCESS_TOKEN without committing it", "Restart the selected client", "Run: npx --package=@praxa/cli@0.3.0 praxa doctor"],
   };
 }
 

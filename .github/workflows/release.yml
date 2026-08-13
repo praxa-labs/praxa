@@ -33,12 +33,20 @@ jobs:
       - name: Use trusted-publishing-compatible npm
         run: npm install --global npm@12.0.1
       - run: npm ci
+      - name: Validate release tag matches package version
+        run: node scripts/check-release-ref.mjs
+        env:
+          PRAXA_RELEASE_PUBLISH_REQUESTED: ${{ github.event_name == 'release' || inputs.publish }}
       - run: npm run verify
-      - run: npm run release:pack
+      - name: Pack release assets
+        run: npm run release:pack
+        env:
+          PRAXA_RELEASE_PUBLISH_REQUESTED: ${{ github.event_name == 'release' || inputs.publish }}
       - name: Publish packages to npm
         if: github.event_name == 'release' || inputs.publish
         run: npm run release:publish
         env:
+          PRAXA_RELEASE_PUBLISH_REQUESTED: ${{ github.event_name == 'release' || inputs.publish }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - uses: actions/upload-artifact@v6
         with:

@@ -6,8 +6,8 @@ missions, stream mission events, discover capabilities, query scoped agent
 memory, and inspect skills, traces, goals, and world-model certificates.
 
 The SDK accepts a short-lived delegated OAuth access-token provider at runtime.
-It contains no provider adapter, provider credential, policy implementation,
-execution authority, or embedded secret.
+It contains no provider credential, provider SDK dependency, default network
+client, policy implementation, execution authority, or embedded secret.
 
 ## Install
 
@@ -89,6 +89,56 @@ verification server-side.
 
 The `Aura*` exports and `x-aura-*` headers are stable wire-compatibility names.
 New application code should use the `Praxa*` exports.
+
+## Memory federation
+
+Import the standalone, dependency-free surface from `@praxa/sdk/memory`:
+
+```ts
+import {
+  MemoryFederation,
+  createLangGraphMemorySource,
+} from "@praxa/sdk/memory";
+
+const federation = new MemoryFederation({
+  sources: [createLangGraphMemorySource({
+    store,
+    mapNamespace: ({ tenantId, subjectId }) => [tenantId, subjectId, "memory"],
+  })],
+  maxConcurrency: 4,
+  defaultTimeoutMs: 5_000,
+});
+
+const result = await federation.recall({
+  query: "preferred editor",
+  namespace: { tenantId: "acme", subjectId: "person-1" },
+  limit: 10,
+});
+```
+
+Factories are `createMem0MemorySource`, `createZepMemorySource`,
+`createGraphitiMemorySource`, `createLangGraphMemorySource`,
+`createLettaMemorySource`, and `createOpenAIAgentsSessionSource`. Each receives
+a caller-owned client or transport and an explicit namespace mapper. LangGraph
+checkpoints are intentionally excluded; only long-term Store items adapt.
+Each adapter advertises only the retrieval mode it sends to, or can truthfully
+derive from, that provider. OpenAI Agents session adaptation keeps official
+message items only and ranks the recent chronological window newest first.
+Graphiti defaults to the conservative `graph` mode; declare `retrievalModes`
+explicitly when an injected transport also implements `hybrid` or `semantic`.
+
+The engine groups only exact `kind + NFKC/whitespace-normalized text` matches,
+retains every grouped source match, keeps contradictory text separate, and
+orders groups with deterministic reciprocal-rank fusion over source ordinal
+ranks. Provider scores stay source-local and are never compared. See the
+repository's `docs/MEMORY-FEDERATION.md` for limits and supported read shapes.
+
+`MemoryRecordEnvelopeV1`, `createMemoryRecordEnvelopeV1`,
+`parseMemoryRecordEnvelopeV1`, and `isMemoryRecordEnvelopeV1` provide the
+dependency-free portable interchange contract. The strict validator preserves
+source identity, original timestamps, and provenance while applying the same
+empty metadata/evidence/origin-chain defaults as the hosted schema. It performs
+no network call and uses the hosted calendar-valid RFC 3339 timestamp grammar.
 
 `src/generated-contracts.ts` is deterministically generated from the canonical
 OpenAPI document. In the private harness, run `npm run
