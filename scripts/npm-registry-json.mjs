@@ -52,3 +52,24 @@ export function assertPublishedPackageIntegrity(expectedName, packed, published)
     throw new Error(`published_digest_mismatch:${expectedName}@${published.version}`);
   }
 }
+
+export async function waitForPublishedManifest(
+  lookup,
+  {
+    attempts = 46,
+    intervalMs = 2_000,
+    delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds)),
+  } = {},
+) {
+  if (typeof lookup !== "function") throw new Error("npm_registry_lookup_invalid");
+  if (!Number.isSafeInteger(attempts) || attempts < 1) throw new Error("npm_registry_attempts_invalid");
+  if (!Number.isSafeInteger(intervalMs) || intervalMs < 0) throw new Error("npm_registry_interval_invalid");
+  if (typeof delay !== "function") throw new Error("npm_registry_delay_invalid");
+
+  for (let attempt = 0; attempt < attempts; attempt += 1) {
+    const published = await lookup();
+    if (published !== undefined) return published;
+    if (attempt < attempts - 1) await delay(intervalMs);
+  }
+  return undefined;
+}
