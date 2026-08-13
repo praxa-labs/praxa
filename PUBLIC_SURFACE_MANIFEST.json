@@ -8,7 +8,7 @@
     },
     {
       "path": ".github/workflows/release.yml",
-      "sha256": "1a086be6e4d7d05d46625c0267a5f9a6d99f1646dc478a7c2b7bb2c9fbe58284"
+      "sha256": "dcc9605b23aa8c6224067d7474956018b780626563f74ba49a8effbbb00bfbe7"
     },
     {
       "path": ".gitignore",
@@ -16,7 +16,7 @@
     },
     {
       "path": "CHANGELOG.md",
-      "sha256": "62982f2dd2fd2e0d7ce5b983b7bda6987adbfdfbc08017283ee6c364c23d596a"
+      "sha256": "88a9d7fc49bda1d80324b572c02a3eea9dee0076d7b6840d1b8816bab7e9b6c9"
     },
     {
       "path": "CODE_OF_CONDUCT.md",
@@ -27,34 +27,6 @@
       "sha256": "308525771f2f41e483a0c5ba0a1e97e89923c7f5728192b2a6146c1b1809ca79"
     },
     {
-      "path": "docs/AGENT_SETUP.md",
-      "sha256": "3a53fbf8ba1cdca76b358ebeea9b5ba4805ba2518809ea50dc66aab1a353897d"
-    },
-    {
-      "path": "docs/ARCHITECTURE.md",
-      "sha256": "5f7fa7258324eac99ada81708a1230c83674466c1396518dbfb14b4007d10adc"
-    },
-    {
-      "path": "docs/AUTHENTICATION.md",
-      "sha256": "febcd9bf1edbc70675b1af55dd5f36e9254b9f1665e436e8884b7ff4e61b4824"
-    },
-    {
-      "path": "docs/RELEASING.md",
-      "sha256": "7da0bb11d5ced8897e865310c81829a45c11a03c848a5e3722c51d59ed9107e4"
-    },
-    {
-      "path": "docs/SECURITY.md",
-      "sha256": "3e08728719a008139ddbf1833380349b2543a79c1e8b69733627d09b31749c38"
-    },
-    {
-      "path": "examples/integrations/frameworks.md",
-      "sha256": "e3b35228b2f4fa45ae0a5b8259c7fd266d5a23c477ada5394832b4997d007eaa"
-    },
-    {
-      "path": "examples/typescript/mission.ts",
-      "sha256": "6d56b3771a2cdf50a491895d34045dfe7a32353aa294ec6ec542afe2bb65f0d9"
-    },
-    {
       "path": "LICENSE",
       "sha256": "4402fec3a0c040eb2e3b8c81009868ad5cdccdb4f007b8a3a2a5c6c8eb0d2d0f"
     },
@@ -63,24 +35,60 @@
       "sha256": "efb5539cd50be74608773fc5e05ace7927c90feb2f11d004cbd47b11a0f8b07d"
     },
     {
+      "path": "README.md",
+      "sha256": "b25b53d678d3a1eb3c851dd3a3fd91ecb9921e21d869d3f78648f6989e512ef9"
+    },
+    {
+      "path": "SECURITY.md",
+      "sha256": "3dac977c4d732adf6273a08b628ce439ae9671b7d89baf844f6926f5a38621c7"
+    },
+    {
+      "path": "docs/AGENT_SETUP.md",
+      "sha256": "d86b181385cfe29fd13938d108397d1cac192602705a09690bd7d1979006ba72"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "sha256": "5f7fa7258324eac99ada81708a1230c83674466c1396518dbfb14b4007d10adc"
+    },
+    {
+      "path": "docs/AUTHENTICATION.md",
+      "sha256": "792488f2938abbc7af640bb52f9eca13ea90585424e75bba657577cf4359e27e"
+    },
+    {
+      "path": "docs/MEMORY-FEDERATION.md",
+      "sha256": "c66c226f4eb89f77b3762660d2d8e812d7c2585fb2aa2d487807bfebb9e0c78b"
+    },
+    {
+      "path": "docs/RELEASING.md",
+      "sha256": "3e44d04fd09ce772dbb24bb7bca14ea8dd7590ab8442864b2a71ea557714aebe"
+    },
+    {
+      "path": "docs/SECURITY.md",
+      "sha256": "3e08728719a008139ddbf1833380349b2543a79c1e8b69733627d09b31749c38"
+    },
+    {
+      "path": "examples/integrations/frameworks.md",
+      "sha256": "3e82602076a8073bb4fe107bdef41801bec1c2efc3ceb058400398e1edbc2436"
+    },
+    {
+      "path": "examples/integrations/memory-federation.md",
+      "sha256": "c6886cad65fe59ff92e3fa4785b5457a6202d3c19136bff28b04f2e3a0bcb2d3"
+    },
+    {
+      "path": "examples/typescript/mission.ts",
+      "sha256": "6d56b3771a2cdf50a491895d34045dfe7a32353aa294ec6ec542afe2bb65f0d9"
+    },
+    {
       "path": "openapi/praxa-api.yaml",
       "sha256": "a9835faa4654246f83c452ae968a569c85be28f93017882e710ca35c10dbbecc"
     },
     {
       "path": "package-lock.json",
-      "sha256": "44b49155d5f952bfc9050b5105cad052b1fbaa46733eb3bec91408cebf799e75"
+      "sha256": "d090a0b49016fc907e89683818f9abfa0f3042238978d7bd5f24d41e096915e8"
     },
     {
       "path": "package.json",
-      "sha256": "84a0403c957d92fcf202ceea4c1ed6dafffcff8722bc5b167161bf9bf31ea8ad"
-    },
-    {
-      "path": "packages/cli/bin/aura.mjs",
-      "sha256": "e64fc0240258478c0a6c603c76c9f266a07fcba8e688d5c92f61449bd05c9a3b"
-    },
-    {
-      "path": "packages/cli/bin/praxa.mjs",
-      "sha256": "8f32f17cba67c56a17a3dc0f52ce503412e7bc8eed09b0622e8154c43e4ea263"
+      "sha256": "84ff2ba4e46c8638348d8898df18114b77ba19eb54f1baa8742a8c532ab63ca8"
     },
     {
       "path": "packages/cli/LICENSE",
@@ -91,20 +99,32 @@
       "sha256": "efb5539cd50be74608773fc5e05ace7927c90feb2f11d004cbd47b11a0f8b07d"
     },
     {
-      "path": "packages/cli/package.json",
-      "sha256": "7e20911eb93aac83820541c59cdced5942b34e20bf6375d50d21507e6a95db1e"
+      "path": "packages/cli/README.md",
+      "sha256": "ddcd929d792f194ae289cd6c6cf0f3e0f0edc16bc7aed98414ab3c90909111bf"
     },
     {
-      "path": "packages/cli/README.md",
-      "sha256": "8bca94a677fe2e134c6de7b17c32d195c2d812aa775047d75d0dbb315e26f26a"
+      "path": "packages/cli/bin/aura.mjs",
+      "sha256": "e64fc0240258478c0a6c603c76c9f266a07fcba8e688d5c92f61449bd05c9a3b"
+    },
+    {
+      "path": "packages/cli/bin/praxa.mjs",
+      "sha256": "55320fd047ed61d2c879255dc9911e01446ee6b5a4166f8d431392658ac131ae"
+    },
+    {
+      "path": "packages/cli/package.json",
+      "sha256": "e27c93f29c276574424f4ee1fcc33befa6dbc95a1a97b171fc29c62995a2a9e3"
     },
     {
       "path": "packages/cli/src/arguments.ts",
-      "sha256": "556284ef94f2163570a92104dc4527f1db176a9755451aba2b816756f139c901"
+      "sha256": "95c4a56777d69d20d4c890f9938f2660f4fe7382d51b2ff8fc4db10a293da493"
     },
     {
       "path": "packages/cli/src/init.ts",
-      "sha256": "42577422a333437e3f692fccbeff9f44bf32ecae0f884c889772f3d59102534a"
+      "sha256": "b12f8be39b9457cb0828b521eceeca85908f090bac78e433b4f7a8b4f2ebccec"
+    },
+    {
+      "path": "packages/cli/src/memory.ts",
+      "sha256": "99a74033fadf61945ed92e7e71ea7a811f2cc6f45148251e456e0bdf325ea914"
     },
     {
       "path": "packages/cli/tsconfig.json",
@@ -119,16 +139,16 @@
       "sha256": "efb5539cd50be74608773fc5e05ace7927c90feb2f11d004cbd47b11a0f8b07d"
     },
     {
-      "path": "packages/mcp-contracts/package.json",
-      "sha256": "f8351ff7cd7f9ba4a379420d65b3d1da2e9f1293d7d3a5feac23ee05a01371ad"
-    },
-    {
       "path": "packages/mcp-contracts/README.md",
       "sha256": "0467fae7c4bba24b2282ea3f33667812e65687854868de385a6ad746c6c4730f"
     },
     {
+      "path": "packages/mcp-contracts/package.json",
+      "sha256": "5955405bc2e1478af1366897785b6fb81cc916bb32514aae6309467edf819e34"
+    },
+    {
       "path": "packages/mcp-contracts/src/index.ts",
-      "sha256": "d94aa0d4df2cbf60705928a93fc7d499986546d6687a5c96c5899ec3ba1ab62a"
+      "sha256": "2a7d5e1172eff17359bf4a408fdaf8e53ddad2c6ec8255233435f14e076c011c"
     },
     {
       "path": "packages/mcp-contracts/tsconfig.json",
@@ -143,12 +163,12 @@
       "sha256": "efb5539cd50be74608773fc5e05ace7927c90feb2f11d004cbd47b11a0f8b07d"
     },
     {
-      "path": "packages/sdk/package.json",
-      "sha256": "2fc98ffef870f1f4376351766a8df6a01069665d62155e80713d53d1a356f4d9"
+      "path": "packages/sdk/README.md",
+      "sha256": "012248a1368e19eb78f80a2b302260015e379c8056d1a8041b853bbe3f6b1cbf"
     },
     {
-      "path": "packages/sdk/README.md",
-      "sha256": "b6efd95820f5b55b0c15209786f354a533aebdfc3041e235d92585a7c5a5f168"
+      "path": "packages/sdk/package.json",
+      "sha256": "6116d7f89db2c44d286d7e8caf33f9826ff51b2e4bf2bb62ea7c5a3a453c0ab2"
     },
     {
       "path": "packages/sdk/src/client.ts",
@@ -163,6 +183,58 @@
       "sha256": "35f87c150f79d839b3bcf7df219a56a8593391e8017f5a2aff1fc080dbee8e61"
     },
     {
+      "path": "packages/sdk/src/memory/adapter-utils.ts",
+      "sha256": "1f346bb6f7bfb91acb9d192931a2b4eb90138e85f298101911a3148d464bdebd"
+    },
+    {
+      "path": "packages/sdk/src/memory/adapters/graphiti.ts",
+      "sha256": "8a1c0a11f9ab07c8f90ccfbc223adf60955163679a872d4257e80f377a0fbef7"
+    },
+    {
+      "path": "packages/sdk/src/memory/adapters/langgraph.ts",
+      "sha256": "4ace6039362faf4e1addc3dfd81555f71be5c304833b928e461856ea11450b3e"
+    },
+    {
+      "path": "packages/sdk/src/memory/adapters/letta.ts",
+      "sha256": "474c6f8121b4c3cd1f432818c77c415d73da6bca257801ef92019249100eb372"
+    },
+    {
+      "path": "packages/sdk/src/memory/adapters/mem0.ts",
+      "sha256": "b1457db3a2127ad07cb49362ac56d8650c39c6f61c551e98ab351c34c432b680"
+    },
+    {
+      "path": "packages/sdk/src/memory/adapters/openai-agents.ts",
+      "sha256": "0ef59996f065b5b4368cb0c41320bfd918780afa285472305b9921c888182f02"
+    },
+    {
+      "path": "packages/sdk/src/memory/adapters/zep.ts",
+      "sha256": "1567c9cee549332a7330a2724342546317bf3228f3791a17c86cfdd1e45f2d60"
+    },
+    {
+      "path": "packages/sdk/src/memory/contracts.ts",
+      "sha256": "be61f745847f62cdaccfb254daaf89d3dc6e50a565f37a2f32df534b5c4faeef"
+    },
+    {
+      "path": "packages/sdk/src/memory/envelope.ts",
+      "sha256": "7b7745c36a41871039739609f592cfd601f9f7c49f4eca18dba9de38ebb9eb68"
+    },
+    {
+      "path": "packages/sdk/src/memory/federation.ts",
+      "sha256": "40be59846808a4b9cbbf63702eed5ef35b372359f600862e4983fb6206daa8c1"
+    },
+    {
+      "path": "packages/sdk/src/memory/index.ts",
+      "sha256": "93bd4194369c297ee5ae9f409cc5729364dc203c3181142517387692746afe82"
+    },
+    {
+      "path": "packages/sdk/src/memory/normalize.ts",
+      "sha256": "a1fde9fee890260c1d92e6c83bc2b1868a51add11a83eb42ed9c83e8e0af2a66"
+    },
+    {
+      "path": "packages/sdk/src/memory/timestamp.ts",
+      "sha256": "d537ad74c097a28eb40584ef5ae2652cdfc15c2d3e7fe4d0e7f943ef4d958317"
+    },
+    {
       "path": "packages/sdk/src/tools.ts",
       "sha256": "8647f2c83e72a15e1424172c94535989c68c353f990b5ea600bf191421edad3a"
     },
@@ -171,16 +243,16 @@
       "sha256": "fdb0d748cdff9e85bf08d1144277f7e16de963e62343dfb2f9c7d5ebf46f1578"
     },
     {
-      "path": "README.md",
-      "sha256": "8b75387d0065b7fefdc31f30d8a498b7b064e1f2b052c3c81b72998a9739f714"
-    },
-    {
       "path": "scripts/check-packages.mjs",
-      "sha256": "5c62704f92e53c099ef236a96bdf3d0c2b1e8154b90e2418053fc7cb6ec07a3f"
+      "sha256": "7938b649f40b946103a8c407d70ddfc237ca51828b9a64fb9d268dbc017cfac8"
     },
     {
       "path": "scripts/check-public-boundary.mjs",
-      "sha256": "47ec3fbc9bf39e9228f461732d13394e817bc4d3956bb8bd9108247b863a9ff4"
+      "sha256": "dc6acbeef672c6a78da811735142fd1faa500467bf09c06e25de7f60f4ec8393"
+    },
+    {
+      "path": "scripts/check-release-ref.mjs",
+      "sha256": "e1a8ad223ec73cfa2ee3f493fda98a5d8eea6c6d0dcf33f2dd36e36a469ff657"
     },
     {
       "path": "scripts/npm-pack-json.mjs",
@@ -188,19 +260,43 @@
     },
     {
       "path": "scripts/npm-registry-json.mjs",
-      "sha256": "f2dc795c75ae3518efb569d8f7f352fe39309cc3e702e1641664aac96ea95a8d"
+      "sha256": "e4a80e7437ee919c13698fb04a4adbfaf052f359fa222c05f62cfc63d1b84fd7"
     },
     {
       "path": "scripts/pack-release.mjs",
-      "sha256": "3aee91f17041118182a9854c3b14d02d3095d0ad00a3d5bb3f22a72296df3315"
+      "sha256": "dfffefc4d62172c39d51b93a973f9db502cb71e35f679b3735db80b5f6bf4533"
     },
     {
       "path": "scripts/publish-packages.mjs",
-      "sha256": "2a0a7cbfa6834bb8f097c50b2ac22c41391b8b39aaa97fdf8048ae0ee446d503"
+      "sha256": "a4357cca6ee2acbfd8f2da4dc58be340be7fa74917c4ee828ef00a2b4f68ca57"
     },
     {
-      "path": "SECURITY.md",
-      "sha256": "3dac977c4d732adf6273a08b628ce439ae9671b7d89baf844f6926f5a38621c7"
+      "path": "scripts/release-context.mjs",
+      "sha256": "22357ae059e48e01905816a8db58abfd555140f9f956942fee06f99dc0494615"
+    },
+    {
+      "path": "scripts/update-public-surface.mjs",
+      "sha256": "568e048bc57bb90fa7e46ebf60182c4c3140ed1018ee4aa577d11b2923188466"
+    },
+    {
+      "path": "tests/clean-install.test.mjs",
+      "sha256": "e4dd0125f2da48d41de182c3c86f15b54fa43a0397408c89cf58907c445c6e09"
+    },
+    {
+      "path": "tests/memory-adapters.test.mjs",
+      "sha256": "3c4ee3491f4ffa1545002c7b7bd6e1a394f98577096945b7fb4cbcf68d64032e"
+    },
+    {
+      "path": "tests/memory-cli.test.mjs",
+      "sha256": "3d9fbded5b5f51700374a74e1753f7f7a860db9093911431934fded59ededb8c"
+    },
+    {
+      "path": "tests/memory-envelope.test.mjs",
+      "sha256": "18d2e875c57e3d91fb60810d107cf5908e2e7ba64e244bf090b8f448dc236db6"
+    },
+    {
+      "path": "tests/memory-federation.test.mjs",
+      "sha256": "b2f6802d0e54a660256d9129bb43a301de6ab80407598117b970e447c1368314"
     },
     {
       "path": "tests/npm-pack-json.test.mjs",
@@ -208,11 +304,15 @@
     },
     {
       "path": "tests/npm-registry-json.test.mjs",
-      "sha256": "83b1e5586866fa57ae6619072de65841e10d67d9decf8e4a91c2959cc5afbd96"
+      "sha256": "f169b19b044ef034c8f947eec39cacba327c2c7bcecfa93d2b7a92df8130f7ff"
     },
     {
       "path": "tests/public-api.test.mjs",
-      "sha256": "5048d66fbdb59aa13f1a2f7e66790285baef41fd57e404fcb5124764c2fbf7db"
+      "sha256": "760c330b79791eeddd8dd0715f4ef074f61a158737927f5d3d8da3bddd262fb9"
+    },
+    {
+      "path": "tests/release-context.test.mjs",
+      "sha256": "dae866fffc7dd4de014bae9885b2b021eba2569d16e3989fbeb53466c565fa3d"
     },
     {
       "path": "tsconfig.json",

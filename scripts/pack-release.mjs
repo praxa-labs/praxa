@@ -6,11 +6,19 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { parseNpmPackJson } from "./npm-pack-json.mjs";
+import { assertReleaseRefMatchesVersion, publishRequestedFromEnvironment } from "./release-context.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const assetDirectory = path.join(root, "release-assets");
 const packages = ["sdk", "mcp-contracts", "cli"];
 const rootManifest = JSON.parse(await readFile(path.join(root, "package.json"), "utf8"));
+
+assertReleaseRefMatchesVersion({
+  eventName: process.env.GITHUB_EVENT_NAME,
+  refName: process.env.GITHUB_REF_NAME,
+  version: rootManifest.version,
+  publishRequested: publishRequestedFromEnvironment(process.env.PRAXA_RELEASE_PUBLISH_REQUESTED),
+});
 
 await rm(assetDirectory, { recursive: true, force: true });
 await mkdir(assetDirectory, { recursive: true });

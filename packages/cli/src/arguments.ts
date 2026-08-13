@@ -2,10 +2,25 @@ export const DEFAULT_PRAXA_BASE_URL = "https://agents.praxa.io" as const;
 
 export type PraxaInitTarget = "codex" | "claude" | "cursor" | "vscode" | "env";
 export type PraxaAuthMode = "environment" | "oauth";
+export type PraxaMemoryProvider = "mem0" | "zep" | "graphiti" | "langgraph" | "letta" | "openai_agents";
 
 export type AuraCliCommand =
   | Readonly<{ kind: "help" }>
   | Readonly<{ kind: "version" }>
+  | Readonly<{
+      kind: "memory-source-add";
+      provider: PraxaMemoryProvider;
+      mode: "federated";
+      projectDirectory: string;
+      dryRun: boolean;
+      json: boolean;
+    }>
+  | Readonly<{
+      kind: "memory-sync-plan";
+      projectDirectory: string;
+      dryRun: true;
+      json: boolean;
+    }>
   | Readonly<{
       kind: "init";
       baseUrl: string;
@@ -136,6 +151,48 @@ export function parseAuraCliArguments(
     validateOptions(arguments_, 1, []);
     return { kind: "version" };
   }
+  if (arguments_[0] === "memory") {
+    if (arguments_[1] === "mirror" || arguments_[1] === "cutover") {
+      throw new Error(`Memory ${arguments_[1]} is not implemented; @praxa/cli 0.3.0 supports read-only federated source configuration only`);
+    }
+    if (arguments_[1] === "sync" && arguments_[2] === "run") {
+      throw new Error("Memory sync execution is not implemented; use 'praxa memory sync plan --dry-run'");
+    }
+    if (arguments_[1] === "source" && arguments_[2] === "add") {
+      const provider = arguments_[3];
+      const providers = new Set<PraxaMemoryProvider>(["mem0", "zep", "graphiti", "langgraph", "letta", "openai_agents"]);
+      if (!providers.has(provider as PraxaMemoryProvider)) {
+        throw new Error("Memory provider must be mem0, zep, graphiti, langgraph, letta, or openai_agents");
+      }
+      validateOptions(arguments_, 4, ["--mode", "--project-dir"], ["--dry-run", "--json"]);
+      const mode = option(arguments_, "--mode");
+      if (mode === "mirror" || mode === "cutover") {
+        throw new Error(`Memory mode ${mode} is not implemented; only federated read-only configuration is available`);
+      }
+      if (mode !== "federated") throw new Error("--mode federated is required");
+      return {
+        kind: "memory-source-add",
+        provider: provider as PraxaMemoryProvider,
+        mode,
+        projectDirectory: option(arguments_, "--project-dir") ?? ".",
+        dryRun: arguments_.includes("--dry-run"),
+        json: arguments_.includes("--json"),
+      };
+    }
+    if (arguments_[1] === "sync" && arguments_[2] === "plan") {
+      validateOptions(arguments_, 3, ["--project-dir"], ["--dry-run", "--json"]);
+      if (!arguments_.includes("--dry-run")) {
+        throw new Error("Memory sync planning is non-executable and requires --dry-run");
+      }
+      return {
+        kind: "memory-sync-plan",
+        projectDirectory: option(arguments_, "--project-dir") ?? ".",
+        dryRun: true,
+        json: arguments_.includes("--json"),
+      };
+    }
+    throw new Error("Expected memory source add or memory sync plan --dry-run");
+  }
   const configuredBaseUrl = option(arguments_, "--base-url")
     ?? environment["PRAXA_BASE_URL"]
     ?? environment["AURA_BASE_URL"];
@@ -157,7 +214,7 @@ export function parseAuraCliArguments(
     };
   }
   if (arguments_[0] !== "doctor" && arguments_[0] !== "mission") {
-    throw new Error("Expected init, doctor, or mission command");
+    throw new Error("Expected init, memory, doctor, or mission command");
   }
   if (configuredBaseUrl === undefined) {
     throw new Error("Missing --base-url or PRAXA_BASE_URL");
