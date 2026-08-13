@@ -260,7 +260,7 @@
     },
     {
       "path": "scripts/npm-registry-json.mjs",
-      "sha256": "e4a80e7437ee919c13698fb04a4adbfaf052f359fa222c05f62cfc63d1b84fd7"
+      "sha256": "a3682f18292bf9f2d3338ebc70a2343cf22ab5472cea54d0edfda8bfb097234a"
     },
     {
       "path": "scripts/pack-release.mjs",
@@ -268,7 +268,7 @@
     },
     {
       "path": "scripts/publish-packages.mjs",
-      "sha256": "a4357cca6ee2acbfd8f2da4dc58be340be7fa74917c4ee828ef00a2b4f68ca57"
+      "sha256": "02be85952706ace3a7d197b935b6d383152b19454ff64148748dc25301d2ef82"
     },
     {
       "path": "scripts/release-context.mjs",
@@ -304,7 +304,7 @@
     },
     {
       "path": "tests/npm-registry-json.test.mjs",
-      "sha256": "f169b19b044ef034c8f947eec39cacba327c2c7bcecfa93d2b7a92df8130f7ff"
+      "sha256": "fa00f6ef031a2d84b69af7baef377c766c14c15ba956eacdf4b553ca901c869c"
     },
     {
       "path": "tests/public-api.test.mjs",

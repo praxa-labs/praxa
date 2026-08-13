@@ -9,6 +9,7 @@ import {
   npmPackageTarballFilename,
   npmTarballIntegrity,
   parseNpmViewManifest,
+  waitForPublishedManifest,
 } from "./npm-registry-json.mjs";
 import { assertReleaseRefMatchesVersion } from "./release-context.mjs";
 
@@ -37,8 +38,6 @@ function publishedManifest(specifier, expectedVersion) {
   throw new Error(`Registry lookup failed for ${specifier}: ${failure}`);
 }
 
-const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
-
 for (const directory of packages) {
   const manifest = JSON.parse(await readFile(path.join(root, "packages", directory, "package.json"), "utf8"));
   assert.equal(manifest.version, rootManifest.version, `${manifest.name} version must match the release version`);
@@ -65,11 +64,7 @@ for (const directory of packages) {
   const publication = spawnSync("npm", publishArguments, { cwd: root, stdio: "inherit" });
   assert.equal(publication.status, 0, `npm publish failed for ${specifier}`);
 
-  let published;
-  for (let attempt = 0; attempt < 6 && published === undefined; attempt += 1) {
-    published = publishedManifest(specifier, manifest.version);
-    if (published === undefined && attempt < 5) await delay(2_000);
-  }
+  const published = await waitForPublishedManifest(() => publishedManifest(specifier, manifest.version));
   assert.notEqual(published, undefined, `Published package did not become readable from npm: ${specifier}`);
   assertPublishedPackageIntegrity(manifest.name, packed, published);
   console.log(`Published registry integrity verified: ${specifier}`);
